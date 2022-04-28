@@ -11,4 +11,6 @@ public interface WordListService {
     WordListDto createWordList(WordListDto wordListDto);
     void deleteWordList(String title);
     WordListDto updateWordList(String title, WordListDto wordListDto);
+    void deleteWordsInWordList(String title, List<String> words);
+
 }
