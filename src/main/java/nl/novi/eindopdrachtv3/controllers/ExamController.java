@@ -36,6 +36,7 @@ public class ExamController {
         return new ResponseEntity<>(allPassedExams, HttpStatus.OK);
     }
 
+
     @GetMapping("/exams/{isPassed}/{false}")
     public ResponseEntity<Object> getFailedExams(@PathVariable boolean isPassed) {
         List<ExamDto> allFailedExams = service.getFailedExams(false);

@@ -37,7 +37,7 @@ public class ExamServiceImpl implements ExamService {
         Exam e = new Exam();
 
         e.setWrongEntries(examDto.getWrongEntries());
-        e.setPassed(examDto.isPassed());
+        e.setIsPassed(examDto.isPassed());
         e.setTimestamp(examDto.getTimestamp());
         examRepository.save(e);
 

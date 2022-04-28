@@ -13,7 +13,7 @@ public class ExamDto {
     public ExamDto() {
     }
 
-    public ExamDto(int wrongEntries, boolean isPassed, LocalDateTime dateTime) {
+    public ExamDto(int wrongEntries, boolean isPassed, LocalDateTime timestamp) {
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
         this.timestamp = LocalDateTime.now();
@@ -29,7 +29,7 @@ public class ExamDto {
     public boolean isPassed() {
         return isPassed;
     }
-    public void setPassed(boolean isPassed) {
+    public void setIsPassed(boolean isPassed) {
         this.isPassed = isPassed;
     }
 
