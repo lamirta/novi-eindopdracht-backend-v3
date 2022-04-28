@@ -44,20 +44,25 @@ public class WordListController {
         service.deleteWordList(title);
     }
 
-    @DeleteMapping("/wordlists/{title}/{words}") //delete ook woorden uit woordenlijst functie?
-    public void deleteWordsInWordList(@PathVariable("title") String title, @PathVariable List<String> words) {
-
-        service.deleteWordsInWordList(title, words);
-    }
-
-    // @Valid moet dat niet steeds gebruikt worden hier?
     @PutMapping("/wordlists/{title}")
     public WordListDto updateWordList(@PathVariable("title") String title, @RequestBody WordListDto wordListDto) {
 
         WordListDto wlDto = service.updateWordList(title, wordListDto);
 
         return wlDto;
+//        return new ResponseEntity<>("Woordenlijst aangepast", HttpStatus.OK); kan ik een message terug geven? Hoe?
     }
+
+
+// // note: volgens mij moet je delete word in wordlist, een @Put doen met die woorden die meoten blijven..?
+    // dus met de put die ik hierboven al heb, kan je ook gewoon woorden aanpassen. je past de hele lijst gewoon aan..
+
+
+//    @DeleteMapping("/wordlists/title/{words}") //delete ook woorden uit woordenlijst functie?
+//    public void deleteWordsInWordList(@PathVariable("words") List<String> words) {
+//
+//        service.deleteWordsInWordList(words);
+//    }
 
 //    // Kan deze PutMapping wel?? Als ja, dan method in service zetten
 //    @PutMapping("/wordlists/{title}/{words}")

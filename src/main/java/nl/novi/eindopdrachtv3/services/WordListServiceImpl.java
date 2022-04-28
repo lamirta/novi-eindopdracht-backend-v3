@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
+import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.WordListRepository;
@@ -56,18 +57,29 @@ public class WordListServiceImpl implements WordListService {
 
     @Override
     public void deleteWordList(String title) {
-
+        wordListRepository.deleteById(title);
     }
 
-    @Override // hoe???
-    public void deleteWordsInWordList(String title, List<String> words) {
-
-    }
 
     @Override
     public WordListDto updateWordList(String title, WordListDto wordListDto) {
-        return null;
+        if (wordListRepository.findById(title).isPresent()) {
+
+            WordList wl = wordListRepository.findById(title).get();
+            wl.setTitle(wordListDto.getTitle());
+            wl.setWords(wordListDto.getWords());
+            wordListRepository.save(wl);
+
+            return wordListDto;
+        } else {
+            throw new RecordNotFoundException("Geen woordenlijst gevonden");
+        }
     }
 
+//    @Override
+//    public void deleteWordsInWordList(List<String> words) {
+//        wordListRepository.deleteAllById(words);
+//    }
+//    Deze doet het nog niet helaas
 
 }
