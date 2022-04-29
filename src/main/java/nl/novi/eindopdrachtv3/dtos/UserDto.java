@@ -1,19 +1,18 @@
-package nl.novi.eindopdrachtv3.models;
+package nl.novi.eindopdrachtv3.dtos;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDto {
 
-    @Id
     @Column(nullable = false, unique = true)
     public String username;
 
+    @Column(nullable = false, length = 35)
     public String password;
+
+    @Column(nullable = false)
     public String email;
+
     public Boolean enabled;
     public String apikey;
 
@@ -29,7 +28,15 @@ public class User {
 //    private Set<Authority> authorities = new HashSet<>();
 
 
-    public User() {
+    public UserDto() {
+    }
+
+    public UserDto(String username, String password, String email, Boolean enabled, String apikey) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.apikey = apikey;
     }
 
     public String getUsername() {
@@ -66,6 +73,5 @@ public class User {
     public void setApikey(String apikey) {
         this.apikey = apikey;
     }
-
 
 }
