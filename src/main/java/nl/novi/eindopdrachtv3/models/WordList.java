@@ -1,14 +1,10 @@
 package nl.novi.eindopdrachtv3.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.coyote.Response;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.http.ResponseEntity;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity

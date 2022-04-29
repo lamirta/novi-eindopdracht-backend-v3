@@ -24,18 +24,29 @@ public class Exam {
     @JoinColumn(name = "wordlist_title")
     private WordList wordList;
 
-//    @ManyToOne  ???
-//    private UserData userdata;
+    @ManyToOne
+    @JoinColumn(name = "userdata_id")
+    private UserData user;
+
 
     public Exam() {
     }
 
-    public Exam(int wrongEntries, boolean isPassed, LocalDateTime timestamp, WordList wordList) {
+    public Exam(int wrongEntries, boolean isPassed, LocalDateTime timestamp, WordList wordList, UserData user) {
+        this.id = id;
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
         this.timestamp = timestamp;
         this.wordList = wordList;
+        this.user = user;
 //        this.timestamp = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getWrongEntries() {
@@ -64,6 +75,13 @@ public class Exam {
     }
     public void setWordList(WordList wordList) {
         this.wordList = wordList;
+    }
+
+    public UserData getUser() {
+        return user;
+    }
+    public void setUser(UserData user) {
+        this.user = user;
     }
 }
 
