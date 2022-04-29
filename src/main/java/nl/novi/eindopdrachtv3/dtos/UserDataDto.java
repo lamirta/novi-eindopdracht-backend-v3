@@ -1,17 +1,13 @@
-package nl.novi.eindopdrachtv3.models;
-
+package nl.novi.eindopdrachtv3.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import nl.novi.eindopdrachtv3.models.Exam;
 
-import javax.persistence.*;
+import javax.persistence.OneToMany;
 import java.util.List;
 
-@Entity
-@Table(name = "userData")
-public class UserData {
+public class UserDataDto {
 
-    @Id
-    @GeneratedValue
     Long id;
 
     private String firstName;
@@ -19,10 +15,11 @@ public class UserData {
     private int age;
     private String school;
 
-    // @OneToOne (mapperby ?? user?)
+    // @OneToOne
     // private Image profilePic;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Exam> exams;
+
 }

@@ -37,12 +37,12 @@ public class ExamController {
 //        return new ResponseEntity<>(allPassedExams, HttpStatus.OK);
 //    }
 
-    // method hiervoor schirijven in service
-    @GetMapping("/exams/{isPassed}")
-    public ResponseEntity<ExamDto> getExamsByIsPassed(@PathVariable boolean isPassed) {
-        List<ExamDto> allExamResults = service.getExamsByIsPassed(isPassed);
-        return new ResponseEntity<>(allExamResults, HttpStatus.OK);
-    }
-
+//    // method hiervoor schirijven in service
+//    @GetMapping("/exams/{isPassed}")
+//    public ResponseEntity<ExamDto> getExamsByIsPassed(@PathVariable boolean isPassed) {
+//        List<ExamDto> allExamResults = service.getExamsByIsPassed(isPassed);
+//        return new ResponseEntity<>(allExamResults, HttpStatus.OK);
+//    }
+//
 
 }

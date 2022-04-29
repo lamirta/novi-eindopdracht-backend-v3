@@ -21,6 +21,9 @@ public class User {
     public Boolean enabled;
     public String apikey;
 
+    // @OneToOne ???
+    // private UserData userData;
+
 //    @OneToMany(
 //            targetEntity = Authority.class,
 //            mappedBy = "username",
