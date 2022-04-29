@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.ExamDto;
+import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.services.ExamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,17 +31,18 @@ public class ExamController {
         return exam;
     }
 
-    @GetMapping("/exams/{isPassed}/{true}")
-    public ResponseEntity<Object> getPassedExams(@PathVariable boolean isPassed) {
-        List<ExamDto> allPassedExams = service.getPassedExams(true);
-        return new ResponseEntity<>(allPassedExams, HttpStatus.OK);
+//    @GetMapping("/exams/{isPassed}/{true}")
+//    public ResponseEntity<Object> getPassedExams(@PathVariable boolean isPassed) {
+//        List<ExamDto> allPassedExams = service.getPassedExams(true);
+//        return new ResponseEntity<>(allPassedExams, HttpStatus.OK);
+//    }
+
+    // method hiervoor schirijven in service
+    @GetMapping("/exams/{isPassed}")
+    public ResponseEntity<ExamDto> getExamsByIsPassed(@PathVariable boolean isPassed) {
+        List<ExamDto> allExamResults = service.getExamsByIsPassed(isPassed);
+        return new ResponseEntity<>(allExamResults, HttpStatus.OK);
     }
 
-
-    @GetMapping("/exams/{isPassed}/{false}")
-    public ResponseEntity<Object> getFailedExams(@PathVariable boolean isPassed) {
-        List<ExamDto> allFailedExams = service.getFailedExams(false);
-        return new ResponseEntity<>(allFailedExams, HttpStatus.OK);
-    }
 
 }

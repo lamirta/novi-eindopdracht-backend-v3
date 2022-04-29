@@ -1,10 +1,13 @@
 package nl.novi.eindopdrachtv3.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import nl.novi.eindopdrachtv3.models.Exam;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +25,11 @@ public class WordListDto {
 
     @ElementCollection
     @Column(nullable = false)
-    private List<String> words = new ArrayList<String>();
+    private List<String> words = new ArrayList<>();
 
-    //    //OneToMany relation
-//    private List<Exam> exams;
+    @OneToMany(mappedBy = "wordList")
+    @JsonIgnore
+    private List<Exam> exams;
+
 
 }

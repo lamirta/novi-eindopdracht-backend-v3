@@ -20,23 +20,21 @@ public class Exam {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
 
-
     @ManyToOne
-    @JoinColumn(name = "wordlist_id")
+    @JoinColumn(name = "wordlist_title")
     private WordList wordList;
-    // in service function schrijven:
-    //    void assignWordListToExam(Long id, String wordListTitle);
 
-//    @ManyToOne
+//    @ManyToOne  ???
 //    private UserData userdata;
 
     public Exam() {
     }
 
-    public Exam(int wrongEntries, boolean isPassed, LocalDateTime timestamp) {
+    public Exam(int wrongEntries, boolean isPassed, LocalDateTime timestamp, WordList wordList) {
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
         this.timestamp = timestamp;
+        this.wordList = wordList;
 //        this.timestamp = LocalDateTime.now();
     }
 
@@ -59,6 +57,13 @@ public class Exam {
     }
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public WordList getWordList() {
+        return wordList;
+    }
+    public void setWordList(WordList wordList) {
+        this.wordList = wordList;
     }
 }
 

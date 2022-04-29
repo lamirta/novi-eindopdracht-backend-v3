@@ -25,7 +25,7 @@ public class WordListServiceImpl implements WordListService {
         List<WordListDto> wlDtoList = new ArrayList<>();
 
         for(WordList wl : wlList) {
-            WordListDto wldto = new WordListDto(wl.getTitle(), wl.getWords());
+            WordListDto wldto = new WordListDto(wl.getTitle(), wl.getWords(), wl.getExams());
             wlDtoList.add(wldto);
         }
         return wlDtoList;
@@ -75,6 +75,13 @@ public class WordListServiceImpl implements WordListService {
             throw new RecordNotFoundException("Geen woordenlijst gevonden");
         }
     }
+
+    @Override
+    public WordList getWordList(String title) {
+        return wordListRepository.findById(title).get();
+    }
+
+
 
 //    @Override
 //    public void deleteWordsInWordList(List<String> words) {

@@ -26,7 +26,7 @@ public class ExamServiceImpl implements ExamService {
         List<ExamDto> edtoList = new ArrayList<>();
 
         for(Exam e : el) {
-            ExamDto edto = new ExamDto(e.getWrongEntries(), e.isPassed(), e.getTimestamp());
+            ExamDto edto = new ExamDto(e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList());
             edtoList.add(edto);
         }
         return edtoList;
@@ -39,30 +39,33 @@ public class ExamServiceImpl implements ExamService {
         e.setWrongEntries(examDto.getWrongEntries());
         e.setIsPassed(examDto.isPassed());
         e.setTimestamp(examDto.getTimestamp());
+        e.setWordList(examDto.getWordList());
         examRepository.save(e);
 
         return examDto;
     }
 
-    // how to List of Exams with attribute boolean isPassed true??
     @Override
-    public List<ExamDto> getPassedExams(boolean isPassed) {
+    public List<ExamDto> getExamsByIsPassed(boolean isPassed) {
         return null;
+//        Hoe?? kijk comments hieronder..
     }
 
-    @Override
-    public List<ExamDto> getFailedExams(boolean isPassed) {
-        return null;
-    }
 
-    // wanneer relatie gelegd is.
-//    @Override
-//    public List<ExamDto> getExamsOfUsername(User username) {
-//        return null;
-//    }
-
-    //wanneer wordlist relatie gelegd is: @GetMapping met isPassed {true} && wordlist {title} ??
 }
+
+// how to get List of Exams with attribute boolean isPassed true??
+//    @Override
+//    public List<ExamDto> getExamsByIsPassed(boolean isPassed) {
+//        List<Exam> el = examRepository.findAll();
+//        List<ExamDto> edtoList = new ArrayList<>();
+//
+//        for(Exam e : el) {
+//            ExamDto edto = new ExamDto(e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList());
+//            edtoList.add(edto);
+//        }
+//        return edtoList;
+//    }
 
 
 //    @Override
@@ -78,3 +81,12 @@ public class ExamServiceImpl implements ExamService {
 //            throw new RecordNotFoundException("Geen geslaagde toetsen gevonden");
 //        }
 //    }
+
+
+// wanneer relatie gelegd is.
+//    @Override
+//    public List<ExamDto> getExamsOfUsername(User username) {
+//        return null;
+//    }
+
+//wanneer wordlist relatie gelegd is: @GetMapping met isPassed {true} && wordlist {title} ??

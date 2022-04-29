@@ -1,7 +1,14 @@
 package nl.novi.eindopdrachtv3.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.coyote.Response;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.http.ResponseEntity;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -12,10 +19,11 @@ public class WordList {
     private String title;
 
     @ElementCollection
-    private List<String> words = new ArrayList<String>();
+    private List<String> words = new ArrayList<>();
 
-//    //OneToMany relation
-//    private List<Exam> exams;
+    @OneToMany(mappedBy = "wordList")
+    @JsonIgnore  // om recursie (endless loop) te voorkomen, maar moet wel andere methode maken nu om de exams bij wordlist op te vragen.
+    private List<Exam> exams;
 
 
     public WordList() {
@@ -35,5 +43,10 @@ public class WordList {
         this.words = words;
     }
 
-
+    public List<Exam> getExams() {
+        return exams;
+    }
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
 }

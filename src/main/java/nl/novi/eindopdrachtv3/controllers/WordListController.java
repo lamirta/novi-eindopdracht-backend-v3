@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
+import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.services.WordListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,12 @@ public class WordListController {
 
         return wlDto;
 //        return new ResponseEntity<>("Woordenlijst aangepast", HttpStatus.OK); kan ik een message terug geven? Hoe?
+    }
+
+    @GetMapping("/wordlists/{title}/exams")
+    public ResponseEntity<Object> getWordListExams(@PathVariable String title) {
+        WordList wl = service.getWordList(title);
+        return new ResponseEntity<>(wl.getExams(), HttpStatus.OK);
     }
 
 
