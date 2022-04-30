@@ -2,9 +2,13 @@ package nl.novi.eindopdrachtv3.models;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "images")
 public class Image {
 
     @Id
