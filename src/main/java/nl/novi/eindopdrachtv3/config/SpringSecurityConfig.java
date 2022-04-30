@@ -36,7 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+        super.configure(http); // hier gaan we er al vanuit dat gebruiker auth is, dus ingelogd.
+        // en hier kan je dus rollen toewijzen
+        // daar gebruik je antMatchers() voor, zie voorbeeld.
     }
 
     @Bean
