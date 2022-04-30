@@ -53,13 +53,13 @@ public class ImageService {
         imageRepository.deleteById(imageName);
     }
 
-    public String updateImage(String imageName, MultipartFile file){
-        if (imageRepository.findById(imageName).isPresent()) {
-            return file;
-        } else {
-            throw new RecordNotFoundException("Afbeelding niet gevonden.");
-        }
-    }
+//    public String updateImage(String imageName, MultipartFile file){
+//        if (imageRepository.findById(imageName).isPresent()) {
+//            return file;
+//        } else {
+//            throw new RecordNotFoundException("Afbeelding niet gevonden.");
+//        }
+//    }
 
 }
 

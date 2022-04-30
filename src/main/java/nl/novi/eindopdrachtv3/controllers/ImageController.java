@@ -37,14 +37,14 @@ public class ImageController {
         service.deleteImage(imageName);
     }
 
-    @PutMapping("/image/{imageName}")
-    public ResponseEntity<Image> updateImage(@PathVariable("imageName") String imageName, @RequestBody MultipartFile file) {
-//        Image img = service.updateImage(imageName, file);
-//        return img;
-          service.updateImage(imageName, file);
-          return ResponseEntity.noContent().build();
-//        return img.image;service.updateImage(imageName, file);
-    }
+//    @PutMapping("/image/{imageName}")
+//    public ResponseEntity<Image> updateImage(@PathVariable("imageName") String imageName, @RequestBody MultipartFile file) {
+////        Image img = service.updateImage(imageName, file);
+////        return img;
+//          service.updateImage(imageName, file);
+//          return ResponseEntity.noContent().build();
+////        return img.image;service.updateImage(imageName, file);
+//    }
 
 }
 
