@@ -20,13 +20,13 @@ public class User {
     // @OneToOne ???
     // private UserData userData;
 
-//    @OneToMany(
-//            targetEntity = Authority.class,
-//            mappedBy = "username",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.EAGER)
-//    private Set<Authority> authorities = new HashSet<>();
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
 
 
     public User() {
@@ -67,5 +67,14 @@ public class User {
         this.apikey = apikey;
     }
 
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
 
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
 }

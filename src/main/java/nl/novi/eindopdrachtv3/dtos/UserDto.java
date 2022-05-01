@@ -1,6 +1,10 @@
 package nl.novi.eindopdrachtv3.dtos;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.novi.eindopdrachtv3.models.Authority;
+
 import javax.persistence.Column;
+import java.util.Set;
 
 public class UserDto {
 
@@ -16,28 +20,17 @@ public class UserDto {
     public Boolean enabled;
     public String apikey;
 
+    @JsonSerialize
+    public Set<Authority> authorities;
+
     // @OneToOne ???
     // private UserData userData;
 
-//    @OneToMany(
-//            targetEntity = Authority.class,
-//            mappedBy = "username",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.EAGER)
-//    private Set<Authority> authorities = new HashSet<>();
 
 
     public UserDto() {
     }
 
-    public UserDto(String username, String password, String email, Boolean enabled, String apikey) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.enabled = enabled;
-        this.apikey = apikey;
-    }
 
     public String getUsername() {
         return username;
@@ -72,6 +65,13 @@ public class UserDto {
     }
     public void setApikey(String apikey) {
         this.apikey = apikey;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
 }

@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
+import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,13 @@ public class ExceptionController {
 
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<Object> exception(BadRequestException exception) {
+
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(value = TitleNotFoundException.class)
+    public ResponseEntity<Object> exception(TitleNotFoundException exception) {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
 
