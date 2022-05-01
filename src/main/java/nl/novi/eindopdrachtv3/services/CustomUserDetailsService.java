@@ -20,11 +20,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
-
+// deze zou nu moeten kloppen!!
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDto userDto = userService.getUser(username);
-
 
         String password = userDto.getPassword();
 

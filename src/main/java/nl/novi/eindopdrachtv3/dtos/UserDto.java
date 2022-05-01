@@ -31,6 +31,14 @@ public class UserDto {
     public UserDto() {
     }
 
+    public UserDto(String username, String password, String email, Boolean enabled, String apikey, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.apikey = apikey;
+        this.authorities = authorities;
+    }
 
     public String getUsername() {
         return username;
