@@ -31,6 +31,11 @@ public class ExamController {
         return exam;
     }
 
+//    @GetMapping("/exams/{title}")
+//    public ResponseEntity<Object> getAllExamsByWordListTitle(@RequestParam String title) {
+//        return null;
+//    }
+
 //    @GetMapping("/exams/{isPassed}/{true}")
 //    public ResponseEntity<Object> getPassedExams(@PathVariable boolean isPassed) {
 //        List<ExamDto> allPassedExams = service.getPassedExams(true);

@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtv3.config;
 
+import nl.novi.eindopdrachtv3.services.ExamService;
 import nl.novi.eindopdrachtv3.utils.JwtRequestFilter;
 import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 @Configuration
+@Component
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public CustomUserDetailsService customUserDetailsService;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    public JwtRequestFilter jwtRequestFilter;
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

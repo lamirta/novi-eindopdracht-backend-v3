@@ -66,7 +66,7 @@ public class WordListServiceImpl implements WordListService {
         if (wordListRepository.findById(title).isPresent()) {
 
             WordList wl = wordListRepository.findById(title).get();
-            wl.setTitle(wordListDto.getTitle());
+            wl.setTitle(wl.getTitle());
             wl.setWords(wordListDto.getWords());
             wordListRepository.save(wl);
 
@@ -74,11 +74,6 @@ public class WordListServiceImpl implements WordListService {
         } else {
             throw new RecordNotFoundException("Geen woordenlijst gevonden");
         }
-    }
-
-    @Override
-    public WordList getWordList(String title) {
-        return wordListRepository.findById(title).get();
     }
 
 

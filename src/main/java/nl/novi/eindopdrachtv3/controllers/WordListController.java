@@ -54,11 +54,13 @@ public class WordListController {
 //        return new ResponseEntity<>("Woordenlijst aangepast", HttpStatus.OK); kan ik een message terug geven? Hoe?
     }
 
-    @GetMapping("/wordlists/{title}/exams")
-    public ResponseEntity<Object> getWordListExams(@PathVariable String title) {
-        WordList wl = service.getWordList(title);
-        return new ResponseEntity<>(wl.getExams(), HttpStatus.OK);
-    }
+
+    // bij wordlists staat niets in de database voor exams, dat moet je via exams opvragen.
+//    @GetMapping("/wordlists/{title}/exams")
+//    public ResponseEntity<Object> getWordListExams(@PathVariable String title) {
+//        WordList wl = service.getWordListByTitle(title);
+//        return new ResponseEntity<>(wl.getExams(), HttpStatus.OK);
+//    }
 
 
 // // note: volgens mij moet je delete word in wordlist, een @Put doen met die woorden die meoten blijven..?

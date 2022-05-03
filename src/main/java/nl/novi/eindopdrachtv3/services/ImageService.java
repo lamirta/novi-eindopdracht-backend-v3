@@ -55,7 +55,9 @@ public class ImageService {
 
 //    public String updateImage(String imageName, MultipartFile file){
 //        if (imageRepository.findById(imageName).isPresent()) {
-//            return file;
+//            Image img = new Image(img.setImageName(img.getImageName());
+//
+//            return img;
 //        } else {
 //            throw new RecordNotFoundException("Afbeelding niet gevonden.");
 //        }
