@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "userData")
 public class UserData {
-
+// wil ik deze klas niet overerven van User?? ik wil hier ook een username namelijk.
     @Id
     @GeneratedValue
     Long id;
@@ -19,10 +19,14 @@ public class UserData {
     private int age;
     private String school;
 
-    // @OneToOne (mapperby ?? user?)
+    // @OneToOne (mapperby ?? image?)
     // private Image profilePic;
+
+    // @OneToOne (mapperby ?? user?)
+    // private User user;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Exam> exams;
+
 }

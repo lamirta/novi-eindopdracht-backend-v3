@@ -18,6 +18,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.Optional;
 
+// ImageService is voor Storage in local file system, niet in de Database, om ruimte te besparen.
 @Service
 public class ImageService {
 
@@ -48,6 +49,7 @@ public class ImageService {
         return fileName;
     }
 
+    // werkt deze wel goed? even testen nog.
     public void deleteImage(String imageName){
 
         imageRepository.deleteById(imageName);

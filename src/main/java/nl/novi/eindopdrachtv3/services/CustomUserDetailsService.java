@@ -35,5 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }
+    // moet hier ook nog de methode .setAutorities aangeroepen worden?
 
 }
