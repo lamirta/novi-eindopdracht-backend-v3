@@ -13,12 +13,14 @@ public class Image {
 
     @Id
     @UniqueElements
+    private Long id;
+
     private String imageName;
 
     @Lob
     public byte[] image;
 
-    private String mediaType;
+    private String contentType;
 
 //    @OneToOne(cascade = CascadeType.ALL) //moet dit erachter?
 //    @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -42,11 +44,10 @@ public class Image {
         this.image = image;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public String getContentType() {
+        return contentType;
     }
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
-
 }

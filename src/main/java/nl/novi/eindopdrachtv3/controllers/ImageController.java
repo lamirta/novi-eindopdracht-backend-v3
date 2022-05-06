@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtv3.controllers;
 
-import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.services.ImageService;
 import nl.novi.eindopdrachtv3.utils.ImageUploadResponse;
@@ -25,50 +24,25 @@ public class ImageController {
     }
 
 
-    @GetMapping(value = "/images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    ResponseEntity<Resource> getImageByImageName(@PathVariable String imageName, HttpServletRequest request) {
-        Resource resource = service.getImageById(imageName);
-
-        Image img = service.getImageById(imageName).get();
-        return img.image;
-    }
-
-    @GetMapping("/download/{fileName}")
-    ResponseEntity<Resource> downLoadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
-
-        Resource resource = fileStorageService.downLoadFile(fileName);
-
-//        this mediaType decides witch type you accept if you only accept 1 type
-//        MediaType contentType = MediaType.IMAGE_JPEG;
-//        this is going to accept multiple types
-        String mimeType;
-
-        try{
-            mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+    @PostMapping("/images")
+    public String upload(@RequestBody MultipartFile file) {
+        Image img = new Image();
+        try {
+            img.image = file.getBytes();
+        }
+        catch (IOException iex) {
+            return "Error while uploading image...";
         }
 
-//        for download attachment use next line
-//        return ResponseEntity.ok().contentType(contentType).header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + resource.getFilename()).body(resource);
-//        for showing image in browser
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
+        service.save(img);
+        return "Image uploaded";
     }
 
-
-
-
-    @PostMapping("/images/uploads")
-    ImageUploadResponse uploadImage(@RequestParam("file") MultipartFile file) {
-
-        String imageName = service.storeImage(file);
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(imageName).toUriString();
-        String mediaType = file.getContentType();
-
-        return new ImageUploadResponse(imageName, mediaType, url);
+    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] download(@PathVariable Long id) {
+        Image img = service.findById(id).get();
+        return img.image;
     }
-
-
 
     @DeleteMapping(value = "/images/{imageName}")
     public void deleteImage(@PathVariable("imageName") String imageName) {
@@ -81,6 +55,28 @@ public class ImageController {
 }
 
 
+      // hier eindje opweg voor local file storage system
+
+//    @GetMapping(value = "/images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+//    ResponseEntity<Resource> getImageByImageName(@PathVariable String imageName, HttpServletRequest request) {
+//        Resource resource = service.getImageById(imageName);
+//
+//        Image img = service.getImageById(imageName).get();
+//        return img.image;
+//    }
+//
+//
+//    @PostMapping("/images/uploads")
+//    ImageUploadResponse uploadImage(@RequestParam("file") MultipartFile file) {
+//
+//        String imageName = service.storeImage(file);
+//        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(imageName).toUriString();
+//        String mediaType = file.getContentType();
+//
+//        return new ImageUploadResponse(imageName, mediaType, url);
+//    }
+
+      // hier eventueel nog naar kijken
 
 //    //produces = MediaType.MULTIPART_MIXED_VALUE
 //    @GetMapping(value = "/images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
