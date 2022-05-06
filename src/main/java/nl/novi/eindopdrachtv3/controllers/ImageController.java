@@ -1,18 +1,16 @@
 package nl.novi.eindopdrachtv3.controllers;
 
+import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.services.ImageService;
-import nl.novi.eindopdrachtv3.utils.ImageUploadResponse;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.util.Collection;
 
 @CrossOrigin
 @RestController
@@ -23,34 +21,29 @@ public class ImageController {
         this.service = service;
     }
 
+    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImageById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.getImageById(id));
+    }
+
+    //deze hieronder zijn goed nu, nog wel testen..
+
+    @GetMapping("/images")
+    public Collection<Image> getAllImages(){
+        return service.getAllImages();
+    }
 
     @PostMapping("/images")
-    public String upload(@RequestBody MultipartFile file) {
-        Image img = new Image();
-        try {
-            img.image = file.getBytes();
-        }
-        catch (IOException iex) {
-            return "Error while uploading image...";
-        }
-
-        service.save(img);
-        return "Image uploaded";
+    public ResponseEntity<Object> uploadImage(@RequestBody MultipartFile file){
+        service.uploadImage(file);
+        return new ResponseEntity<>("Image uploaded!", HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody byte[] download(@PathVariable Long id) {
-        Image img = service.findById(id).get();
-        return img.image;
+    @DeleteMapping(value = "/images/{id}")
+    public void deleteImage(@PathVariable("id") Long id) {
+
+        service.deleteImage(id);
     }
-
-    @DeleteMapping(value = "/images/{imageName}")
-    public void deleteImage(@PathVariable("imageName") String imageName) {
-
-        service.deleteImage(imageName);
-    }
-
-
 
 }
 

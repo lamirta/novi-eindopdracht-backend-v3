@@ -2,25 +2,20 @@ package nl.novi.eindopdrachtv3.models;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "images")
 public class Image {
 
     @Id
-    @UniqueElements
+    @Column(nullable = false, unique = true)
     private Long id;
-
-    private String imageName;
 
     @Lob
     public byte[] image;
 
-    private String contentType;
+    private String type;
 
 //    @OneToOne(cascade = CascadeType.ALL) //moet dit erachter?
 //    @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -30,13 +25,6 @@ public class Image {
     public Image() {
     }
 
-    public String getImageName() {
-        return imageName;
-    }
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
     public byte[] getImage() {
         return image;
     }
@@ -44,10 +32,10 @@ public class Image {
         this.image = image;
     }
 
-    public String getContentType() {
-        return contentType;
+    public String getType() {
+        return type;
     }
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setType(String type) {
+        this.type = type;
     }
 }

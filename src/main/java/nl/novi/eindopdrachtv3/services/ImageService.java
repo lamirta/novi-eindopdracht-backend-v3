@@ -1,24 +1,33 @@
 package nl.novi.eindopdrachtv3.services;
 
+import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
+import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.Image;
+import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
-// ImageService is voor Storage in local file system, niet in de Database, om ruimte te besparen.
+
 @Service
 public class ImageService {
 
@@ -26,34 +35,43 @@ public class ImageService {
     private ImageRepository imageRepository;
 
 
-    @Value("${my.upload_location}")
-    private Path fileStrongPath;
-    public ImageService(ImageRepository imageRepository) {
-        this.imageRepository = imageRepository;
+    public byte[] getImageById(Long id) {
+        if (!imageRepository.existsById(id)) {
+            throw new RecordNotFoundException("Afbeelding niet gevonden.");
+        } else {
+            Image img = imageRepository.findById(id).get();
+            return img.image;
+        }
+    }
+
+    public Collection<Image> getAllImages() {
+        return imageRepository.findAll();
     }
 
 
-    public Optional<Image> getImageById(String imageName) {
-        if (!imageRepository.existsById(imageName)) { throw new RecordNotFoundException("Afbeelding niet gevonden."); }
-        return imageRepository.findById(imageName);
-    }
-
-    public String uploadImage (MultipartFile file) {
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        Path filePath = Paths.get(fileStrongPath + "\\" + fileName);
+    public Image uploadImage(MultipartFile file){
+        Image img = new Image();
         try {
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            img.setImage(file.getBytes());
+            img.setType(file.getContentType());
+            imageRepository.save(img);
         } catch (IOException iex){
             throw new RuntimeException("Error tijdens opslaan");
         }
-        return fileName;
+        return img;
     }
 
-    // werkt deze wel goed? even testen nog.
-    public void deleteImage(String imageName){
 
-        imageRepository.deleteById(imageName);
+    public void deleteImage(Long id){
+        imageRepository.deleteById(id);
     }
+
+
+
+}
+
+
+
 
 //    public String updateImage(String imageName, MultipartFile file){
 //        if (imageRepository.findById(imageName).isPresent()) {
@@ -64,10 +82,6 @@ public class ImageService {
 //            throw new RecordNotFoundException("Afbeelding niet gevonden.");
 //        }
 //    }
-
-}
-
-
 
 
 

@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    Image findMediaType(String mediaType);
+    Image findContentType(String contentType);
 //    Image existsByImageName(String imageName);
 
 }

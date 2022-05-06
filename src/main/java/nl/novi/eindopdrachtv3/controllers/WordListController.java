@@ -12,6 +12,7 @@ import java.util.List;
 
 // @Valid moet dat niet steeds gebruikt worden hier?
 
+@CrossOrigin
 @RestController
 public class WordListController {
     private final WordListService service;
