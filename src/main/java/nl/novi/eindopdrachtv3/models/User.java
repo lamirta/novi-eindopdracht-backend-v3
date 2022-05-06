@@ -14,11 +14,10 @@ public class User {
 
     public String password;
     public String email;
-    public Boolean enabled;
-    public String apikey;
+    private boolean enabled = true;
 
-    // @OneToOne ???
-    // private UserData userData;
+     @OneToOne
+     private UserData userData;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -52,18 +51,11 @@ public class User {
         this.email = email;
     }
 
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getApikey() {
-        return apikey;
-    }
-    public void setApikey(String apikey) {
-        this.apikey = apikey;
     }
 
     public Set<Authority> getAuthorities() {

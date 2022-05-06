@@ -17,8 +17,8 @@ public class UserDto {
     @Column(nullable = false)
     public String email;
 
-    public Boolean enabled;
-    public String apikey;
+    @Column(nullable = false)
+    public boolean enabled;
 
     @JsonSerialize
     public Set<Authority> authorities;
@@ -31,12 +31,11 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String username, String password, String email, Boolean enabled, String apikey, Set<Authority> authorities) {
+    public UserDto(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.enabled = enabled;
-        this.apikey = apikey;
         this.authorities = authorities;
     }
 
@@ -61,18 +60,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getApikey() {
-        return apikey;
-    }
-    public void setApikey(String apikey) {
-        this.apikey = apikey;
     }
 
     public Set<Authority> getAuthorities() {

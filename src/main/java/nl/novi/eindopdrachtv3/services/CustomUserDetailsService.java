@@ -18,12 +18,12 @@ import java.util.Set;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
 // deze zou nu moeten kloppen!!
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDto userDto = userService.getUser(username);
+        UserDto userDto = userServiceImpl.getUserByUsername(username);
 
         String password = userDto.getPassword();
 
@@ -35,6 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }
-    // moet hier ook nog de methode .setAutorities aangeroepen worden?
+    // moet hier ook nog de methode .setAutorities aangeroepen worden? >> nee, in service
 
 }

@@ -15,7 +15,7 @@ public class Exam {
 
     private int wrongEntries;
 
-    private boolean isPassed;
+    private boolean isPassed = false;
 
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
@@ -26,7 +26,7 @@ public class Exam {
 
     @ManyToOne
     @JoinColumn(name = "userdata_id")
-    private UserData user;
+    private UserData user; // deze misschien even anders noemen, = duidelijker.
 
 
     public Exam() {
