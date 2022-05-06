@@ -44,6 +44,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    //deze werkt niet. Error:
+    //org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'requestMappingHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is java.lang.IllegalStateException: Ambiguous mapping. Cannot map 'userController' method
+    //nl.novi.eindopdrachtv3.controllers.UserController#setUserEnabled(String, UserDto)
+    //to {PUT [/users/{username}]}: There is already 'userController' bean method
+    //nl.novi.eindopdrachtv3.controllers.UserController#updateUser(String, UserDto) mapped.
     @PutMapping("/users/{username}")
     public ResponseEntity<UserDto> setUserEnabled(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.setUserEnabled(username, dto);

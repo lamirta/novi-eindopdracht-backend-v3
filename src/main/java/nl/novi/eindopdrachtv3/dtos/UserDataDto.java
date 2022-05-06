@@ -21,7 +21,7 @@ public class UserDataDto {
     private String school;
 
     private User username;
-    private Image profilePic;
+//    private Image profilePic;
     private List<Exam> exams;
 
 

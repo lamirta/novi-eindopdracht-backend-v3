@@ -18,8 +18,8 @@ public class UserData {
     private int age;
     private String school;
 
-    @OneToOne(mappedBy = "image")
-    private Image profilePic;
+//    @OneToOne(mappedBy = "image")
+//    private Image profilePic;
 
     @OneToOne(mappedBy = "userData")
     private User username;
