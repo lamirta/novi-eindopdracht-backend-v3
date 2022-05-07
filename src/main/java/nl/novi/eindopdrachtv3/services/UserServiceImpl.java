@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService{
         } else {
             User user = userRepository.findById(username).get();
             user.setEnabled(updatedUser.isEnabled());
-            user.setEmail(updatedUser.getEmail());
             userRepository.save(user);
         }
     }
@@ -90,11 +89,13 @@ public class UserServiceImpl implements UserService{
     }
 
     public void addAuthority(String username, String authority) {
-
-        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-        User user = userRepository.findById(username).get();
-        user.addAuthority(new Authority(username, authority));
-        userRepository.save(user);
+        if (!userRepository.existsById(username)) {
+            throw new UsernameNotFoundException(username);
+        } else {
+            User user = userRepository.findById(username).get();
+            user.addAuthority(new Authority(username, authority));
+            userRepository.save(user);
+        }
     }
 
     public void removeAuthority(String username, String authority) {
