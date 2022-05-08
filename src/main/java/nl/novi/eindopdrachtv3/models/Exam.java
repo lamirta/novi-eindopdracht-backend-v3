@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,8 +15,7 @@ public class Exam {
     Long id;
 
     private int wrongEntries;
-
-    private boolean isPassed = false;
+    private Boolean isPassed;
 
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
@@ -25,21 +25,21 @@ public class Exam {
     private WordList wordList;
 
     @ManyToOne
-    @JoinColumn(name = "userdata_id")
-    private UserData user; // deze misschien even anders noemen, = duidelijker.
+    @JoinColumn(name = "userprofile_id")
+    private UserProfile userProfile;
 
 
     public Exam() {
     }
 
-    public Exam(int wrongEntries, boolean isPassed, LocalDateTime timestamp, WordList wordList, UserData user) {
+    public Exam(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
         this.timestamp = timestamp;
         this.wordList = wordList;
-        this.user = user;
-//        this.timestamp = LocalDateTime.now();
+        this.userProfile = userProfile;
+        this.timestamp = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -56,11 +56,11 @@ public class Exam {
         this.wrongEntries = wrongEntries;
     }
 
-    public boolean isPassed() {
+    public Boolean isPassed() {
         return isPassed;
     }
-    public void setIsPassed(boolean isPassed) {
-        this.isPassed = isPassed;
+    public void setPassed(Boolean passed) {
+        isPassed = passed;
     }
 
     public LocalDateTime getTimestamp() {
@@ -77,11 +77,11 @@ public class Exam {
         this.wordList = wordList;
     }
 
-    public UserData getUser() {
-        return user;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
-    public void setUser(UserData user) {
-        this.user = user;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }
 

@@ -1,16 +1,17 @@
 package nl.novi.eindopdrachtv3.controllers;
 
-import nl.novi.eindopdrachtv3.services.UserDataService;
+import nl.novi.eindopdrachtv3.services.UserProfileService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-public class UserDataController {
-    private final UserDataService service;
+public class UserProfileController {
+    private final UserProfileService service;
 
-    public UserDataController(UserDataService service) {
+    public UserProfileController(UserProfileService service) {
         this.service = service;
     }
+
 
 }

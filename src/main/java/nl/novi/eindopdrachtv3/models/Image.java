@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.models;
 
-import org.hibernate.validator.constraints.UniqueElements;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -17,12 +18,18 @@ public class Image {
 
     private String type;
 
-//    @OneToOne(cascade = CascadeType.ALL) //moet dit erachter?
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private UserData user;
-// uitzoek of dit welke precies bij student en welke bij image moet staan. is het bidirectional of niet?
+    @OneToOne(mappedBy = "profilePic")
+    @JsonIgnore
+    private UserProfile userProfile;
 
     public Image() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public byte[] getImage() {
@@ -37,5 +44,12 @@ public class Image {
     }
     public void setType(String type) {
         this.type = type;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }

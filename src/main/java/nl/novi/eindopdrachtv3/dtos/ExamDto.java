@@ -1,6 +1,8 @@
 package nl.novi.eindopdrachtv3.dtos;
 
-import nl.novi.eindopdrachtv3.models.UserData;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
+import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.models.WordList;
 
 import javax.persistence.JoinColumn;
@@ -10,31 +12,28 @@ import java.time.LocalDateTime;
 public class ExamDto {
 
     private Long id;
-
     private int wrongEntries;
 
-    private boolean isPassed;
+    @NotNull
+    private Boolean isPassed;
 
+    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    @JoinColumn(name = "wordlist_title")
-    private WordList wordList;
 
-    @ManyToOne
-    @JoinColumn(name = "userdata_id")
-    private UserData user;
+    private WordList wordList;
+    private UserProfile userProfile;
 
     public ExamDto() {
     }
 
-    public ExamDto(Long id, int wrongEntries, boolean isPassed, LocalDateTime timestamp, WordList wordList, UserData user) {
+    public ExamDto(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
         this.timestamp = LocalDateTime.now();
         this.wordList = wordList;
-        this.user = user;
+        this.userProfile = userProfile;
     }
 
     public Long getId() {
@@ -51,11 +50,11 @@ public class ExamDto {
         this.wrongEntries = wrongEntries;
     }
 
-    public boolean isPassed() {
+    public Boolean isPassed() {
         return isPassed;
     }
-    public void setIsPassed(boolean isPassed) {
-        this.isPassed = isPassed;
+    public void setPassed(Boolean passed) {
+        isPassed = passed;
     }
 
     public LocalDateTime getTimestamp() {
@@ -72,10 +71,10 @@ public class ExamDto {
         this.wordList = wordList;
     }
 
-    public UserData getUser() {
-        return user;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
-    public void setUser(UserData user) {
-        this.user = user;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }

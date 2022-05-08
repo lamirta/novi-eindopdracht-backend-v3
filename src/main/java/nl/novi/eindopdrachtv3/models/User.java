@@ -1,5 +1,7 @@
 package nl.novi.eindopdrachtv3.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +18,9 @@ public class User {
     public String email;
     private boolean enabled = true;
 
-     @OneToOne
-     private UserData userData;
+    @OneToOne(mappedBy = "username")
+    @JsonIgnore
+    private UserProfile userProfile;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -60,6 +63,9 @@ public class User {
 
     public Set<Authority> getAuthorities() {
         return authorities;
+    }
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public void addAuthority(Authority authority) {

@@ -26,7 +26,7 @@ public class ExamServiceImpl implements ExamService {
         List<ExamDto> edtoList = new ArrayList<>();
 
         for(Exam e : el) {
-            ExamDto edto = new ExamDto(e.getId(), e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList(), e.getUser());
+            ExamDto edto = new ExamDto(e.getId(), e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList(), e.getUserProfile());
             edtoList.add(edto);
         }
         return edtoList;
@@ -38,10 +38,10 @@ public class ExamServiceImpl implements ExamService {
 
         e.setId(examDto.getId());
         e.setWrongEntries(examDto.getWrongEntries());
-        e.setIsPassed(examDto.isPassed());
+        e.setPassed(examDto.isPassed());
         e.setTimestamp(examDto.getTimestamp());
         e.setWordList(examDto.getWordList());
-        e.setUser(examDto.getUser());
+        e.setUserProfile(examDto.getUserProfile());
         examRepository.save(e);
 
         return examDto;

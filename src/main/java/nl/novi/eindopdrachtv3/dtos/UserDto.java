@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtv3.dtos;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.eindopdrachtv3.models.Authority;
+import nl.novi.eindopdrachtv3.models.UserProfile;
 
 import javax.persistence.Column;
 import java.util.Set;
@@ -11,22 +12,20 @@ public class UserDto {
     @Column(nullable = false, unique = true)
     public String username;
 
-    @Column(nullable = false, length = 35)
+    @Column(nullable = false, length = 40)
     public String password;
 
     @Column(nullable = false)
     public String email;
 
     @Column(nullable = false)
-    public boolean enabled;
+    public boolean enabled = true;
 
     @JsonSerialize
     public Set<Authority> authorities;
 
-    // @OneToOne ???
-    // private UserData userData;
-
-
+    private UserProfile userProfile;
+    
 
     public UserDto() {
     }
@@ -72,6 +71,13 @@ public class UserDto {
     }
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
     }
 
 }
