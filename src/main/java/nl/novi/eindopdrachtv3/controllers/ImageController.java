@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtv3.controllers;
 
-import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.services.ImageService;
 import org.springframework.http.HttpStatus;
@@ -39,9 +38,8 @@ public class ImageController {
         return new ResponseEntity<>("Image uploaded!", HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/images/{id}")
+    @DeleteMapping("/images/{id}")
     public void deleteImage(@PathVariable("id") Long id) {
-
         service.deleteImage(id);
     }
 

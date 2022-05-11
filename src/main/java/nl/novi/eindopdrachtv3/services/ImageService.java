@@ -1,20 +1,10 @@
 package nl.novi.eindopdrachtv3.services;
 
-import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
-import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.Image;
-import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -57,14 +47,12 @@ public class ImageService {
         return img;
     }
 
-
     public void deleteImage(Long id){
         imageRepository.deleteById(id);
     }
 
-
-
 }
+
 
 
 

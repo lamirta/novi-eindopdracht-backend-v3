@@ -62,17 +62,22 @@ public class UserServiceImpl implements UserService{
             throw new RecordNotFoundException();
         } else {
         User user = userRepository.findById(username).get();
+        user.setUsername(user.getUsername());
         user.setPassword(updatedUser.getPassword());
         user.setEmail(updatedUser.getEmail());
         userRepository.save(user);
         }
     }
 
+    // denk dat deze het niet doet bij testen..
     public void setUserEnabled(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new UsernameNotFoundException(username);
         } else {
             User user = userRepository.findById(username).get();
+            user.setUsername(user.getUsername());
+            user.setPassword(user.getPassword());
+            user.setEmail(user.getEmail());
             user.setEnabled(updatedUser.isEnabled());
             userRepository.save(user);
         }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "userProfile")
+@Table(name = "userProfiles")
 public class UserProfile {
     @Id
     @GeneratedValue

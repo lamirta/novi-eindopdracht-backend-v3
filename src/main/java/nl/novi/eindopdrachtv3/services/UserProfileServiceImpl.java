@@ -66,11 +66,16 @@ public class UserProfileServiceImpl implements UserProfileService {
 
             UserProfile up = userProfileRepository.findById(id).get();
             up.setId(up.getId());
-            up.setWords(dto.getWords());
+            up.setFirstName(dto.getFirstName());
+            up.setLastName(dto.getLastName());
+            up.setAge(dto.getAge());
+            up.setSchool(dto.getSchool());
+            up.setUsername(dto.getUsername());
+            up.setProfilePic(dto.getProfilePic());
             up.setExams(dto.getExams());
             userProfileRepository.save(up);
 
-            return wordListDto;
+            return dto;
         } else {
             throw new RecordNotFoundException();
         }
@@ -78,12 +83,34 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public void assignImageToUserProfile(Long id, Long imageId) {
+        var optionalUserProfile = userProfileRepository.findById(id);
+        var optionalImage = imageRepository.findById(imageId);
 
+        if(optionalUserProfile.isPresent() && optionalImage.isPresent()) {
+            var userProfile = optionalUserProfile.get();
+            var image = optionalImage.get();
+
+            userProfile.setProfilePic(image);
+            userProfileRepository.save(userProfile);
+        } else {
+            throw new RecordNotFoundException();
+        }
     }
 
     @Override
     public void assignUserToUserProfile(Long id, String username) {
+        var optionalUserProfile = userProfileRepository.findById(id);
+        var optionalUser = userRepository.findById(username);
 
+        if(optionalUserProfile.isPresent() && optionalUser.isPresent()) {
+            var userProfile = optionalUserProfile.get();
+            var user = optionalUser.get();
+
+            userProfile.setUsername(user);
+            userProfileRepository.save(userProfile);
+        } else {
+            throw new RecordNotFoundException();
+        }
     }
 
 

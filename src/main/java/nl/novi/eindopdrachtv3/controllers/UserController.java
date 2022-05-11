@@ -22,8 +22,8 @@ public class UserController {
 
     @GetMapping("/users/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username) {
-        UserDto optionalUser = service.getUserByUsername(username);
-        return ResponseEntity.ok().body(optionalUser);
+        UserDto udto = service.getUserByUsername(username);
+        return ResponseEntity.ok().body(udto);
     }
 
     @GetMapping("/users")
@@ -44,6 +44,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // denk dat deze het niet doet bij testen.. of misschien een PUT met IdInputDto?
     @PostMapping("/users/{username}/enabled")
     public ResponseEntity<UserDto> setUserEnabled(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.setUserEnabled(username, dto);
@@ -68,7 +69,7 @@ public class UserController {
             service.addAuthority(username, authorityRole);
             return ResponseEntity.noContent().build();
         }
-        catch (Exception brEx) {
+        catch (Exception exc) {
             throw new BadRequestException("Bad Request Error for adding new authority role to user");
         }
     }

@@ -11,7 +11,7 @@ public interface UserService {
     List<UserDto> getUsers();
     UserDto createUser(UserDto userDto);
     void deleteUser(String username);
-    void updateUser(String username, UserDto newUser);
+    void updateUser(String username, UserDto updatedUser);
     void setUserEnabled(String username, UserDto updatedUser);
     Set<Authority> getAuthorities(String username);
     void addAuthority(String username, String authority);

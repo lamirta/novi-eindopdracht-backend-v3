@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtv3.models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,6 +10,7 @@ public class Image {
 
     @Id
     @Column(nullable = false, unique = true)
+    @GeneratedValue
     private Long id;
 
     @Lob
