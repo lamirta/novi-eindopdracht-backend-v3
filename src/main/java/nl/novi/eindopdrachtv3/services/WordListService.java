@@ -1,14 +1,14 @@
 package nl.novi.eindopdrachtv3.services;
 
-import nl.novi.eindopdrachtv3.models.WordList;
+import nl.novi.eindopdrachtv3.dtos.WordListDto;
 
 import java.util.List;
 
-//entities omzetten naar Dto's in attributen
 public interface WordListService {
-    List<WordList> getAllWordLists();
-    WordList getWordListByTitle(String title);
-    WordList createWordList(WordList wordList);
+    List<WordListDto> getAllWordLists();
+    WordListDto getWordListByTitle(String title);
+    WordListDto createWordList(WordListDto wordListDto);
     void deleteWordList(String title);
-    WordList updateWordList();
+    WordListDto updateWordList(String title, WordListDto wordListDto);
+//    void deleteWordsInWordList(List<String> words);  // dat doe je al met update / Put volgens mij..
 }
