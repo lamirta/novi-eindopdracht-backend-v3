@@ -18,7 +18,6 @@ public class WordListServiceImpl implements WordListService {
     private WordListRepository wordListRepository;
 
 
-    // Moet hier geen exception gegooit worden? If geen wordlists, dan, "there are no wordlists yet"
     @Override
     public List<WordListDto> getAllWordLists() {
         List<WordList> wlList = wordListRepository.findAll();
@@ -38,6 +37,7 @@ public class WordListServiceImpl implements WordListService {
             WordList wl = wordListRepository.findById(title).get();
             wldto.setTitle(wl.getTitle());
             wldto.setWords(wl.getWords());
+            wldto.setExams(wl.getExams());
             return wldto;
         } else {
             throw new TitleNotFoundException(title);
@@ -50,6 +50,7 @@ public class WordListServiceImpl implements WordListService {
 
         wl.setTitle(wordListDto.getTitle());
         wl.setWords(wordListDto.getWords());
+        wl.setExams(wordListDto.getExams());
         wordListRepository.save(wl);
 
         return wordListDto;
@@ -68,20 +69,19 @@ public class WordListServiceImpl implements WordListService {
             WordList wl = wordListRepository.findById(title).get();
             wl.setTitle(wl.getTitle());
             wl.setWords(wordListDto.getWords());
+            wl.setExams(wordListDto.getExams());
             wordListRepository.save(wl);
 
             return wordListDto;
         } else {
-            throw new RecordNotFoundException("Geen woordenlijst gevonden");
+            throw new TitleNotFoundException(title);
         }
     }
 
-
+}
 
 //    @Override
 //    public void deleteWordsInWordList(List<String> words) {
 //        wordListRepository.deleteAllById(words);
 //    }
-//    Deze doet het nog niet helaas
-
-}
+//    Deze doet het nog niet helaas.. maar is volgens mij hetzelfde als de update method.

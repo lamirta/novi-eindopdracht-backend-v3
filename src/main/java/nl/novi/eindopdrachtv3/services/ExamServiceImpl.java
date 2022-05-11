@@ -3,10 +3,11 @@ package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.ExamDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
-import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.Exam;
 
 import nl.novi.eindopdrachtv3.repositories.ExamRepository;
+import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
+import nl.novi.eindopdrachtv3.repositories.WordListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,15 @@ public class ExamServiceImpl implements ExamService {
     @Autowired
     private ExamRepository examRepository;
 
+    @Autowired
+    private UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private WordListRepository wordListRepository;
+
 
     @Override
-    public List<ExamDto> getExams() {
+    public List<ExamDto> getAllExams() {
         List<Exam> el = examRepository.findAll();
         List<ExamDto> edtoList = new ArrayList<>();
 
@@ -30,6 +37,17 @@ public class ExamServiceImpl implements ExamService {
             edtoList.add(edto);
         }
         return edtoList;
+    }
+
+    @Override
+    public ExamDto getExamById(Long id) {
+        if (examRepository.findById(id).isPresent()){
+            Exam e = examRepository.findById(id).get();
+            ExamDto edto = new ExamDto(e.getId(), e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList(), e.getUserProfile());
+            return edto;
+        } else {
+            throw new RecordNotFoundException("Geen toets gevonden");
+        }
     }
 
     @Override
@@ -48,13 +66,50 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public List<ExamDto> getExamsByIsPassed(boolean isPassed) {
-        return null;
-//        Hoe?? kijk comments hieronder..
+    public void deleteExamById(Long id) {
+        examRepository.deleteById(id);
     }
 
+    @Override
+    public void assignUserProfileToExam(Long id, Long userProfileId) {
+        var optionalExam = examRepository.findById(id);
+        var optionalUserProfile = userProfileRepository.findById(userProfileId);
+
+        if(optionalExam.isPresent() && optionalUserProfile.isPresent()) {
+            var exam = optionalExam.get();
+            var userProfile = optionalUserProfile.get();
+
+            exam.setUserProfile(userProfile);
+            examRepository.save(exam);
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
+
+    @Override
+    public void assignWordListToExam(Long id, String wordlistTitle) {
+        var optionalExam = examRepository.findById(id);
+        var optionalWordList = wordListRepository.findById(wordlistTitle);
+
+        if(optionalExam.isPresent() && optionalWordList.isPresent()) {
+            var exam = optionalExam.get();
+            var wordList = optionalWordList.get();
+
+            exam.setWordList(wordList);
+            examRepository.save(exam);
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
 
 }
+
+
+
+
+
+
+
 
 // how to get List of Exams with attribute boolean isPassed true??
 //    @Override
@@ -84,11 +139,5 @@ public class ExamServiceImpl implements ExamService {
 //        }
 //    }
 
-
-// wanneer relatie gelegd is.
-//    @Override
-//    public List<ExamDto> getExamsOfUsername(User username) {
-//        return null;
-//    }
 
 //wanneer wordlist relatie gelegd is: @GetMapping met isPassed {true} && wordlist {title} ??

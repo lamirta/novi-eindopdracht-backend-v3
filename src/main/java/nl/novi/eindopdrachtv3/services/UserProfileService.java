@@ -7,14 +7,14 @@ import nl.novi.eindopdrachtv3.models.UserProfile;
 import java.util.List;
 
 public interface UserProfileService {
-    List<UserProfileDto> getAllUserProfileData();
+    List<UserProfileDto> getAllUserProfiles();
     UserProfileDto getUserProfileById(Long id);
-//    UserProfileDto getUserProfileByUsername(User username); // is dit mogelijk??
     UserProfileDto createUserProfile(UserProfileDto dto);
     void deleteUserProfile(Long id);
     UserProfileDto updateUserProfile(Long id, UserProfileDto dto);
     void assignImageToUserProfile(Long id, Long imageId);
-    void assignExamToUserProfile(Long id, Long examId);
     void assignUserToUserProfile(Long id, String username);
 
+    // UserProfileDto getUserProfileByUsername(User username);
+    // is dit mogelijk??
 }

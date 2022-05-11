@@ -18,7 +18,7 @@ public class WordList {
     private List<String> words = new ArrayList<>();
 
     @OneToMany(mappedBy = "wordList")
-    @JsonIgnore  // om recursie (endless loop) te voorkomen, maar moet wel andere methode maken nu om de exams bij wordlist op te vragen.
+    @JsonIgnore
     private List<Exam> exams;
 
 
