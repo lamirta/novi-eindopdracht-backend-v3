@@ -15,7 +15,7 @@ public class UserProfile {
 
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private String school;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -55,10 +55,10 @@ public class UserProfile {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -90,3 +90,9 @@ public class UserProfile {
         this.exams = exams;
     }
 }
+
+
+
+//    @OneToOne(mappedBy = "userProfile")
+//    @JsonIgnore
+//    private Image profilePic;

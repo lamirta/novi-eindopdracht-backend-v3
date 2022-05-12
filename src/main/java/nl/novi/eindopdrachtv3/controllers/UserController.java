@@ -45,7 +45,7 @@ public class UserController {
     }
 
     // denk dat deze het niet doet bij testen.. of misschien een PUT met IdInputDto?
-    @PostMapping("/users/{username}/enabled")
+    @PutMapping("/users/{username}/enabled")
     public ResponseEntity<UserDto> setUserEnabled(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.setUserEnabled(username, dto);
         return ResponseEntity.noContent().build();

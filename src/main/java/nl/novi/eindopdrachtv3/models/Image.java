@@ -53,3 +53,10 @@ public class Image {
         this.userProfile = userProfile;
     }
 }
+
+
+
+//Of andersom?
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_profile_id", referencedColumnName = "id")
+//    private UserProfile userProfile;
