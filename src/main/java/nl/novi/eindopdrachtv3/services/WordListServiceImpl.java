@@ -1,7 +1,6 @@
 package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
-import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.WordListRepository;

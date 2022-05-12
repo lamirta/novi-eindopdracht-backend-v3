@@ -13,7 +13,7 @@ public class UserProfileDto {
 
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private String school;
 
     @Column(nullable = false, unique = true)
@@ -24,16 +24,6 @@ public class UserProfileDto {
     public UserProfileDto() {
     }
 
-    public UserProfileDto(Long id, String firstName, String lastName, int age, String school, User username, Image profilePic, List<Exam> exams) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.school = school;
-        this.username = username;
-        this.profilePic = profilePic;
-        this.exams = exams;
-    }
 
     public Long getId() {
         return id;
@@ -56,10 +46,10 @@ public class UserProfileDto {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
