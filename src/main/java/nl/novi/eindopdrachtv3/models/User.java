@@ -33,6 +33,15 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password, String email, boolean enabled, UserProfile userProfile, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.userProfile = userProfile;
+        this.authorities = authorities;
+    }
+
     public String getUsername() {
         return username;
     }

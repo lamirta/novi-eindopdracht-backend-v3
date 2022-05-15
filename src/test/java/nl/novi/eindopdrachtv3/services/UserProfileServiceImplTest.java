@@ -5,6 +5,7 @@ import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
+import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ class UserProfileServiceImplTest {
 
     @Mock
     UserProfileRepository userProfileRepository;
+
+    @Mock
+    UserRepository userRepository;
 
     @Mock
     UserProfile userProfile;
@@ -72,25 +76,64 @@ class UserProfileServiceImplTest {
 
         // Assert / Then
         Assertions.assertEquals(userProfileFound.get().getId(), 1 );
+    }
 
+//    @Test
+//    void shouldTestMethodAssignUserToUserProfile() {
+//        // Arrange / Given
+//        UserProfile up = new UserProfile();
+//        up.setId(1L);
+//        up.setFirstName("jan");
+//
+//        User user = new User();
+//        user.setUsername("jantje123");
+//
+//        Mockito
+//                .when(userProfileRepository.findById(up.getId()))
+//                .thenReturn(Optional.of(up));
+//        Mockito
+//                .when(userRepository.findById(user.getUsername()))
+//                .thenReturn(Optional.of(user));
+//
+//        Optional<UserProfile> upFound = userProfileRepository.findById(up.getId());
+//        Optional<User> userFound = userRepository.findById(user.getUsername());
+//
+////      // Act / When
+//        userProfileService.assignUserToUserProfile(upFound.get().getId(), userFound.get().getUsername());
+//
+//        // Assert / Then
+//        assertEquals("jantje123", upFound.get().getUsername());
+//    }
+
+
+    @Test
+    void shouldTestMethodFromUserPrToDto() {
+        UserProfile up = new UserProfile();
+
+        up.setId(1L);
+        up.setFirstName("jan");
+        up.setAge(10);
+
+        UserProfileDto dto = userProfileService.fromUserPrToDto(up);
+
+        assertEquals(up.getId(), dto.getId());
+        assertEquals(up.getFirstName(), dto.getFirstName());
+        assertEquals(up.getAge(), dto.getAge());
 
     }
 
-
-
-//    @Test
-//    void testFromUserPrToDto() {
-////        userProfileDto = new UserProfileDto();
-//
-//        Mockito
-//                .when(userProfileRepository.findById(userProfile.getId()))
-//                .thenReturn(userProfileDto);
-//
-//        assertEquals("Jan", "");
-//    }
-
     @Test
-    void fromDtoToUserPr() {
+    void shouldTestMethodFromDtoToUserPr() {
+        UserProfileDto dto = new UserProfileDto();
 
+        dto.setId(2L);
+        dto.setFirstName("piet");
+        dto.setAge(12);
+
+        UserProfile up = userProfileService.fromDtoToUserPr(dto);
+
+        assertEquals(dto.getId(), up.getId());
+        assertEquals(dto.getFirstName(), up.getFirstName());
+        assertEquals(dto.getAge(), up.getAge());
     }
 }

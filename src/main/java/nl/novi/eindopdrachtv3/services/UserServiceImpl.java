@@ -1,6 +1,8 @@
 package nl.novi.eindopdrachtv3.services;
 
+import lombok.AllArgsConstructor;
 import nl.novi.eindopdrachtv3.dtos.UserDto;
+import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.Authority;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -48,6 +51,10 @@ public class UserServiceImpl implements UserService{
     }
 
     public UserDto createUser(UserDto userDto) {
+        boolean existsUsername = userRepository.existsById(userDto.getUsername());
+        if (existsUsername) {
+            throw new BadRequestException("username" + userDto.getUsername() + "taken");
+        }
         User newUser = fromDtoToUser(userDto);
         userRepository.save(newUser);
         return userDto;
