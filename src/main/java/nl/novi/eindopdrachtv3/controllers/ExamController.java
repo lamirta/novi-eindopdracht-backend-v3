@@ -25,7 +25,7 @@ public class ExamController {
     }
 
     @GetMapping("/exams/{id}")
-    public ResponseEntity<ExamDto> getTelevision(@PathVariable("id") Long id) {
+    public ResponseEntity<ExamDto> getExamById(@PathVariable("id") Long id) {
         ExamDto edto = service.getExamById(id);
 
         return ResponseEntity.ok(edto);

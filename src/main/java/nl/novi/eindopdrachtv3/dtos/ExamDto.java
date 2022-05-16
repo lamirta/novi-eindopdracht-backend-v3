@@ -27,6 +27,12 @@ public class ExamDto {
     public ExamDto() {
     }
 
+    public ExamDto(Long id, int wrongEntries, Boolean isPassed) {
+        this.id = id;
+        this.wrongEntries = wrongEntries;
+        this.isPassed = isPassed;
+    }
+
     public ExamDto(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;

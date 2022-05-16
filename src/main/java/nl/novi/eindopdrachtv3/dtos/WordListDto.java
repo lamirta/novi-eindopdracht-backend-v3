@@ -19,10 +19,11 @@ public class WordListDto {
     private String title;
 
     @ElementCollection
-    @Column(nullable = false)
     private List<String> words = new ArrayList<>();
 
     private List<Exam> exams;
 
-
+    public WordListDto(String title) {
+        this.title = title;
+    }
 }
