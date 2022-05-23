@@ -78,32 +78,33 @@ class UserProfileServiceImplTest {
         Assertions.assertEquals(userProfileFound.get().getId(), 1 );
     }
 
-//    @Test
-//    void shouldTestMethodAssignUserToUserProfile() {
-//        // Arrange / Given
-//        UserProfile up = new UserProfile();
-//        up.setId(1L);
-//        up.setFirstName("jan");
-//
-//        User user = new User();
-//        user.setUsername("jantje123");
-//
-//        Mockito
-//                .when(userProfileRepository.findById(up.getId()))
-//                .thenReturn(Optional.of(up));
-//        Mockito
-//                .when(userRepository.findById(user.getUsername()))
-//                .thenReturn(Optional.of(user));
-//
-//        Optional<UserProfile> upFound = userProfileRepository.findById(up.getId());
-//        Optional<User> userFound = userRepository.findById(user.getUsername());
-//
-////      // Act / When
-//        userProfileService.assignUserToUserProfile(upFound.get().getId(), userFound.get().getUsername());
-//
-//        // Assert / Then
-//        assertEquals("jantje123", upFound.get().getUsername());
-//    }
+    @Test
+    void shouldTestMethodAssignUserToUserProfile() {
+        // Arrange / Given
+        UserProfile up = new UserProfile();
+        up.setId(1L);
+        up.setFirstName("jan");
+
+        User user = new User();
+        user.setUsername("jantje123");
+
+        Mockito
+                .when(userProfileRepository.findById(up.getId()))
+                .thenReturn(Optional.of(up));
+        Mockito
+                .when(userRepository.findById(user.getUsername()))
+                .thenReturn(Optional.of(user));
+
+        Optional<UserProfile> upFound = userProfileRepository.findById(up.getId());
+        Optional<User> userFound = userRepository.findById(user.getUsername());
+
+//      // Act / When
+        userProfileService.assignUserToUserProfile(upFound.get().getId(), userFound.get().getUsername());
+        UserProfile found = upFound.get();
+
+        // Assert / Then
+        assertEquals("jantje123", found.getUsername().getUsername());
+    }
 
 
     @Test

@@ -45,19 +45,20 @@ class WordListServiceImplTest {
     void setUp() {
         wordList = new WordList();
         wordList.setTitle("kleuren");
-//        wordList.setWords(new ArrayList<String>("rood", "groen", "blauw"));
+        ArrayList<String> colors = new ArrayList<>();
+        colors.add("rood");
+        colors.add("groen");
+        colors.add("blauw");
+        wordList.setWords(colors);
     }
 
     @Test
     void testGetWordListByTitle() {
-//        wordList = new WordList();
-//        wordList.setTitle("kleuren");
 
         Mockito
                 .when(wordListRepository.findById("kleuren"))
                 .thenReturn(Optional.of(wordList));
 
-        String name = "kleuren";
         String expected = "kleuren";
 
         WordListDto found = wordListService.getWordListByTitle(wordList.getTitle());

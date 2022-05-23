@@ -1,17 +1,16 @@
 package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.UserDto;
+import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.models.User;
+import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -20,17 +19,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 //@DataJpaTest deze moet in Repository test
 class UserServiceImplTest {
 
     @Mock private UserRepository userRepository;
-    @Mock User user;
     private AutoCloseable autoCloseable;
     private UserServiceImpl userServiceTest;
+    @Captor
+    ArgumentCaptor<User> userArgumentCaptor;
 
     @BeforeEach
     void setUp() {
@@ -49,46 +48,28 @@ class UserServiceImplTest {
         verify(userRepository).findAll();
     }
 
-//    @Test
-//    void testMethodCreateUser() {
-//        // given
-//        UserDto dto = new UserDto(
-//                "jantje123",
-//                "password",
-//                "jantje@test.nl",
-//                true,
-//                null
-//        );
-//        // when
-//        userServiceTest.createUser(dto);
-//        // then
-//        ArgumentCaptor<UserDto> userDtoArgumentCaptor =
-//                ArgumentCaptor.forClass(UserDto.class);
-////        ArgumentCaptor<User> userArgumentCaptor =
-////                ArgumentCaptor.forClass(User.class);
-//        User newUser = User userArgumentCaptor;
-//
-//        verify(userRepository).save(userDtoArgumentCaptor.capture());
-//        User capturedUser = userArgumentCaptor.getValue();
-//        assertThat(capturedUser).isEqualTo(dto);
-//    }
+    @Test
+    void testMethodCreateUser() {
+        // given
+        User user = new User(
+                "jantje123",
+                "password",
+                "jantje@test.nl"
+        );
+        // when
+        userRepository.save(user);
+        // then
 
-    // hoe krijg ik dit goed met dto & entity door elkaar?
+        verify(userRepository,times(1)).save(userArgumentCaptor.capture());
 
-//    @Test
-//    void testMethodGetUserByUsername() {
-//        String username = "jantje123";
-//
-//        Mockito
-//                .doReturn(null).when(userRepository)
-//                .findById(username);
-//
-//        // Execute the service call
-//        UserDto found = userServiceTest.getUserByUsername(username);
-//
-//        // Assert the response
-//        assertNull(found, "Widget should not be found");
-//    }
+//        verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedUser = userArgumentCaptor.getValue();
+        assertThat(capturedUser.getUsername()).isEqualTo(user.getUsername());
+        assertThat(capturedUser.getPassword()).isEqualTo(user.getPassword());
+        assertThat(capturedUser.getEmail()).isEqualTo(user.getEmail());
+    }
+
+
 
     @Test
     void testThrowsExWhenUsernameIsTaken() {
@@ -114,9 +95,31 @@ class UserServiceImplTest {
     }
 
     @Test
+    void shouldTestMethodFromDtoToUser() {
+        UserDto dto = new UserDto();
+
+        dto.setUsername("jantje123");
+        dto.setPassword("password");
+        dto.setEmail("jantje@test.nl");
+
+        User u = userServiceTest.fromDtoToUser(dto);
+
+        assertEquals(dto.getUsername(), u.getUsername());
+        assertEquals(dto.getPassword(), u.getPassword());
+        assertEquals(dto.getEmail(), u.getEmail());
+    }
+
+
+    @Test
     void setUserEnabled() {
     }
 }
+
+
+
+
+
+
 
 
 
@@ -138,4 +141,22 @@ class UserServiceImplTest {
 //        verify(userRepository).save(userArgumentCaptor.capture());
 //        User capturedUser = userArgumentCaptor.getValue();
 //        assertThat(capturedUser).isEqualTo(dto);
+//    }
+
+
+// hoe krijg ik dit goed met dto & entity door elkaar?
+
+//    @Test
+//    void testMethodGetUserByUsername() {
+//        String username = "jantje123";
+//
+//        Mockito
+//                .doReturn(null).when(userRepository)
+//                .findById(username);
+//
+//        // Execute the service call
+//        UserDto found = userServiceTest.getUserByUsername(username);
+//
+//        // Assert the response
+//        assertNull(found, "Widget should not be found");
 //    }

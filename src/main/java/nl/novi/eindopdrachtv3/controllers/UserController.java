@@ -5,8 +5,10 @@ import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.services.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -35,13 +37,19 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto dto) {
         UserDto newUser = service.createUser(dto);
-        return ResponseEntity.ok().body(newUser);
+        service.addAuthority(newUser.getUsername(),
+                "ROLE_USER");
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{username}").buildAndExpand(newUser.getUsername()).toUri();
+
+        return ResponseEntity.created(location).body(newUser);
     }
 
     @PutMapping("/users/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.updateUser(username, dto);
-        return ResponseEntity.noContent().build();
+//        String message = "user is updated";
+        return ResponseEntity.ok().build();
     }
 
     // denk dat deze het niet doet bij testen.. of misschien een PUT met IdInputDto?
