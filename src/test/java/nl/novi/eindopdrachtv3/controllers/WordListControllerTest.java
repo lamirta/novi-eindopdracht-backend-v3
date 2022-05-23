@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -75,19 +80,39 @@ class WordListControllerTest {
 
 //    @Test
 //    void shouldReturnAllWordLists() throws Exception {
-//        WordList wordList = new WordList(
-//                "kleuren",
-//                "colors"
-//        );
-//        List<WordList> allwordlists = Arrays.asList(wordlist);
+//        WordList wl = new WordList();
+//        wl.setTitle("numbers");
 //
-//        given(customerService.getAllCustomers()).willReturn(allCustomers);
+//        List<WordList> allwordlists = Arrays.asList(wl);
 //
-//        mvc.perform(get("/customers")
+//        given(mockService.getAllWordLists()).willReturn(allwordlists);
+//
+//        mockMvc.perform(get("/wordlists")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect((ResultMatcher) jsonPath("$", hasSize(1)))
+//                .andExpect((ResultMatcher) jsonPath("$[0].title", is(wordList.getTitle())));
+//    }
+
+
+}
+
+
+
+
+
+//    @Test
+//    void shouldReturnAllWordLists() throws Exception {
+//        WordList wl = new WordList();
+//        wl.setTitle("numbers");
+//
+//        List<WordList> allwordlists = Arrays.asList(wl);
+//
+//        given(mockService.getAllWordLists()).willReturn(allwordlists);
+//
+//        mockMvc.perform(get("/wordlists")
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$", hasSize(1)))
 //                .andExpect(jsonPath("$[0].lastName", is(customer.getTitle())));
 //    }
-
-}
