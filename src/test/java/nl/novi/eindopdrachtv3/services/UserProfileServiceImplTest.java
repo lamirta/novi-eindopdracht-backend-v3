@@ -75,7 +75,7 @@ class UserProfileServiceImplTest {
         Optional<UserProfile> userProfileFound = userProfileRepository.findById(1L);
 
         // Assert / Then
-        Assertions.assertEquals(userProfileFound.get().getId(), 1 );
+        Assertions.assertEquals(1, userProfileFound.get().getId());
     }
 
     @Test

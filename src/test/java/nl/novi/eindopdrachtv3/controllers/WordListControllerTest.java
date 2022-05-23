@@ -4,10 +4,12 @@ import nl.novi.eindopdrachtv3.Eindopdrachtv3Application;
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.services.WordListService;
+import nl.novi.eindopdrachtv3.services.WordListServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,6 +20,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,13 +37,14 @@ class WordListControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    WordListService mockService;
+    WordListServiceImpl mockService;
 
     @Mock
     WordList wordList;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         wordList = new WordList();
         wordList.setTitle("kleuren");
         ArrayList<String> colors = new ArrayList<>();
@@ -70,8 +75,11 @@ class WordListControllerTest {
 
 //    @Test
 //    void shouldReturnAllWordLists() throws Exception {
-//        Customer customer = new Customer("Albert", "Einstein");
-//        List<Customer> allCustomers = Arrays.asList(customer);
+//        WordList wordList = new WordList(
+//                "kleuren",
+//                "colors"
+//        );
+//        List<WordList> allwordlists = Arrays.asList(wordlist);
 //
 //        given(customerService.getAllCustomers()).willReturn(allCustomers);
 //
@@ -79,7 +87,7 @@ class WordListControllerTest {
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$", hasSize(1)))
-//                .andExpect(jsonPath("$[0].lastName", is(customer.getLastName())));
+//                .andExpect(jsonPath("$[0].lastName", is(customer.getTitle())));
 //    }
 
 }

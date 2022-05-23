@@ -109,6 +109,20 @@ class UserServiceImplTest {
         assertEquals(dto.getEmail(), u.getEmail());
     }
 
+    @Test
+    void shouldTestMethodFromUserToDto() {
+        User u = new User();
+
+        u.setUsername("jantje123");
+        u.setPassword("password");
+        u.setEmail("jantje@test.nl");
+
+        UserDto dto = userServiceTest.fromUserToDto(u);
+
+        assertEquals(u.getUsername(), dto.getUsername());
+        assertEquals(u.getPassword(), dto.getPassword());
+        assertEquals(u.getEmail(), dto.getEmail());
+    }
 
     @Test
     void setUserEnabled() {

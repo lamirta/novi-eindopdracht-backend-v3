@@ -66,7 +66,10 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public void deleteExamById(Long id) {
+    public void deleteExamById(Long id) throws RecordNotFoundException {
+        if(!examRepository.findById(id).isEmpty()) {
+            throw new RecordNotFoundException("exam with id: " + id + " not present");
+        }
         examRepository.deleteById(id);
     }
 
