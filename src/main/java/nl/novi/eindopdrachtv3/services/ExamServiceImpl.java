@@ -33,7 +33,12 @@ public class ExamServiceImpl implements ExamService {
         List<ExamDto> edtoList = new ArrayList<>();
 
         for(Exam e : el) {
-            ExamDto edto = new ExamDto(e.getId(), e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList(), e.getUserProfile());
+            ExamDto edto = new ExamDto(
+                    e.getId(),
+                    e.getWrongEntries(),
+                    e.isPassed(), e.getTimestamp(),
+                    e.getWordList(),
+                    e.getUserProfile());
             edtoList.add(edto);
         }
         return edtoList;

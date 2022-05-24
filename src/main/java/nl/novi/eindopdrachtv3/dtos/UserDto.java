@@ -30,6 +30,12 @@ public class UserDto {
     public UserDto() {
     }
 
+    public UserDto(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     public UserDto(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
         this.username = username;
         this.password = password;

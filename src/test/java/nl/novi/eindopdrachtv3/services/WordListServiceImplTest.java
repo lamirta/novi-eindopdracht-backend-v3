@@ -5,8 +5,6 @@ import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
-import nl.novi.eindopdrachtv3.models.Exam;
-import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.WordListRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -40,8 +38,8 @@ import static org.mockito.Mockito.*;
 @EnableConfigurationProperties
 class WordListServiceImplTest {
 
-    @Autowired
-    private WordListService wordListService;
+    @InjectMocks
+    private WordListServiceImpl wordListService;
 
     @MockBean
     private WordListRepository wordListRepository;
@@ -70,6 +68,12 @@ class WordListServiceImplTest {
     }
 
     @Test
+    void TestGetAllWordLists() {
+        wordListService.getAllWordLists();
+        verify(wordListRepository).findAll();
+    }
+
+    @Test
     void testGetWordListByTitle() {
 
         Mockito
@@ -86,11 +90,6 @@ class WordListServiceImplTest {
         assertEquals(expected, wlFound.get().getTitle());
     }
 
-    @Test
-    void TestGetAllWordLists() {
-        wordListService.getAllWordLists();
-        verify(wordListRepository).findAll();
-    }
 
     @Test
     void nonUniqueTitleShouldReturnErrorAndNotCreateNewWordList() {
@@ -110,29 +109,16 @@ class WordListServiceImplTest {
         verify(wordListRepository, never()).save(any());
     }
 
-//    @Test
-//    void testMethodCreateWordListSaveRepository() {
-//        // given
-//        wordListDto.setTitle("numbers");
-//
-//        // when
-//        wordListRepository.save(wordList);
-//        // then
-//
-//        verify(wordListRepository,times(1)).save(wlArgumentCaptor.capture());
-//
-//// hoezo pakt ie het laatste deel van deze methode niet in deze test?
-//        WordList capturedWl = wlArgumentCaptor.getValue();
-//        assertThat(capturedWl.getTitle()).isEqualTo(wordList.getTitle());
-//        assertThat(capturedWl.getWords()).isEqualTo(wordList.getWords());
-//    }
 
+    // deze test zegt nu dat hij eigenlijk niets covered..
     @Test
     void testMethodCreateWordList() {
         // given
         wordListDto.setTitle("numbers");
+//        WordList wl = new WordList();
 
         // when
+//        wordListService.createWordList(wordListDto);
         wordListRepository.save(wordList);
         // then
 
@@ -143,6 +129,7 @@ class WordListServiceImplTest {
         assertThat(capturedWl.getTitle()).isEqualTo(wordList.getTitle());
         assertThat(capturedWl.getWords()).isEqualTo(wordList.getWords());
     }
+
 
     @Test
     void nonExistingTitleShouldReturnExceptionInGetByTitle() {
@@ -189,6 +176,21 @@ class WordListServiceImplTest {
 //        assertThat(capturedWl.getTitle()).isEqualTo(wordList.getTitle());
 //        assertThat(capturedWl.getWords()).isEqualTo(wordList.getWords());
 //    }
+
+
+//    @Test
+//    void testMethodCreateWordListRepoSavedEntityFromDto() {
+//        // given
+//        wordListRepository = null;
+//        wordListDto.setTitle("numbers");
+//
+//        // when
+//        var dtoOutput = wordListService.createWordList(wordListDto);
+//
+//        // then
+//        verify(wordListRepository.existsById("numbers"));
+//    }
+
 
 
 

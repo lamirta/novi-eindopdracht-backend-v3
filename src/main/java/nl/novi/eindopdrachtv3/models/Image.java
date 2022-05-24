@@ -25,6 +25,17 @@ public class Image {
     public Image() {
     }
 
+    public Image(Long id) {
+        this.id = id;
+    }
+
+    public Image(Long id, byte[] image, String type, UserProfile userProfile) {
+        this.id = id;
+        this.image = image;
+        this.type = type;
+        this.userProfile = userProfile;
+    }
+
     public Long getId() {
         return id;
     }
