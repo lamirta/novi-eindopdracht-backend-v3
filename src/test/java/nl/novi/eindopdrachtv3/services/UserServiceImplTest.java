@@ -143,7 +143,7 @@ class UserServiceImplTest {
         // then
         assertThatThrownBy(() ->userServiceTest.createUser(dto))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("username" + dto.getUsername() + "taken");
+                .hasMessageContaining("username " + dto.getUsername() + " taken");
 
         verify(userRepository, never()).save(any());
 

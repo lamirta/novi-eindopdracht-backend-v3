@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
     public UserDto createUser(UserDto userDto) {
         boolean existsUsername = userRepository.existsById(userDto.getUsername());
         if (existsUsername) {
-            throw new BadRequestException("username" + userDto.getUsername() + "taken");
+            throw new BadRequestException("username " + userDto.getUsername() + " taken");
         }
         User newUser = fromDtoToUser(userDto);
         userRepository.save(newUser);

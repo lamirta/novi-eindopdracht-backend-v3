@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,9 @@ public class AuthenticationController {
         }
         catch (BadCredentialsException exception) {
             throw new Exception("Verkeerde username of wachtwoord", exception);
+        }
+        catch (DisabledException exception) {
+            throw new Exception("This user is (temporarily) disabled", exception);
         }
 
         final UserDetails userDetails = userDetailsService

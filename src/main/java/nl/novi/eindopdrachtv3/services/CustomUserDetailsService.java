@@ -20,7 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-// deze zou nu moeten kloppen!!
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDto userDto = userServiceImpl.getUserByUsername(username);
@@ -35,6 +34,5 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }
-    // moet hier ook nog de methode .setAutorities aangeroepen worden? >> nee, in service
 
 }
