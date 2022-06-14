@@ -8,6 +8,7 @@ import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;

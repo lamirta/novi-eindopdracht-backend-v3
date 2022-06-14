@@ -1,42 +1,60 @@
 package nl.novi.eindopdrachtv3.controllers;
 
-import nl.novi.eindopdrachtv3.Eindopdrachtv3Application;
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
 import nl.novi.eindopdrachtv3.models.WordList;
-import nl.novi.eindopdrachtv3.services.WordListService;
+import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;
+import nl.novi.eindopdrachtv3.services.JwtService;
 import nl.novi.eindopdrachtv3.services.WordListServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
-@ContextConfiguration(classes={Eindopdrachtv3Application.class})
-@EnableConfigurationProperties
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 class WordListControllerTest {
+
+    @MockBean
+    CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    ExamController examController;
+
+    @MockBean
+    ImageController imageController;
+
+    @MockBean
+    UserController userController;
+
+    @MockBean
+    UserProfileController upController;
 
     @Autowired
     MockMvc mockMvc;
@@ -59,60 +77,41 @@ class WordListControllerTest {
         wordList.setWords(colors);
     }
 
-//    @Test
-//    void shouldReturnWordListByTitle() throws Exception {
-//        WordListDto dto = new WordListDto();
-//
-//        Mockito
-//                .when(mockService.getWordListByTitle("kleuren"))
-//
-//                .thenReturn(
-//                        dto.setTitle(wordList.getTitle()))
-////                        dto.setWords(wordList.getWords())
-//                );
-//
-//        mockMvc.perform(get("/wordlists/kleuren"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect((ResultMatcher) content());
-//    }
+    @Test
+    void shouldReturnWordListByTitle() throws Exception {
+        WordListDto dto = new WordListDto();
+        dto.setTitle(wordList.getTitle());
+        dto.setWords(wordList.getWords());
+
+        when(mockService.getWordListByTitle("kleuren")).thenReturn(dto);
+
+        mockMvc.perform(get("/wordlists/kleuren")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+//                .andExpect((ResultMatcher) (jsonPath("$.title", is("kleuren"))));
+    }
 
 
-//    @Test
-//    void shouldReturnAllWordLists() throws Exception {
-//        WordList wl = new WordList();
-//        wl.setTitle("numbers");
-//
-//        List<WordList> allwordlists = Arrays.asList(wl);
-//
-//        given(mockService.getAllWordLists()).willReturn(allwordlists);
-//
-//        mockMvc.perform(get("/wordlists")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect((ResultMatcher) jsonPath("$", hasSize(1)))
-//                .andExpect((ResultMatcher) jsonPath("$[0].title", is(wordList.getTitle())));
-//    }
+    @Test
+    void shouldReturnAllWordLists() throws Exception {
+        WordListDto wl = new WordListDto();
+        wl.setTitle("numbers");
 
+        List<WordListDto> allwordlists = new ArrayList<>();
+        allwordlists.add(wl);
+
+
+        when(mockService.getAllWordLists()).thenReturn(allwordlists);
+
+        mockMvc.perform(get("/wordlists")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+//                .andExpect(jsonPath("$[0].title", is(wl.getTitle()));
+    }
 
 }
 
 
-
-
-
-//    @Test
-//    void shouldReturnAllWordLists() throws Exception {
-//        WordList wl = new WordList();
-//        wl.setTitle("numbers");
-//
-//        List<WordList> allwordlists = Arrays.asList(wl);
-//
-//        given(mockService.getAllWordLists()).willReturn(allwordlists);
-//
-//        mockMvc.perform(get("/wordlists")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(1)))
-//                .andExpect(jsonPath("$[0].lastName", is(customer.getTitle())));
-//    }

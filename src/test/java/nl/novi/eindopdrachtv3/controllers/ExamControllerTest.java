@@ -9,14 +9,17 @@
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
+//import org.junit.runner.RunWith;
 //import org.mockito.Mock;
 //import org.mockito.Mockito;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.context.properties.EnableConfigurationProperties;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 //import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.http.MediaType;
 //import org.springframework.test.context.ContextConfiguration;
+//import org.springframework.test.context.junit4.SpringRunner;
 //import org.springframework.test.web.servlet.MockMvc;
 //import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 //
@@ -33,8 +36,8 @@
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 //
 //@WebMvcTest
-//@ContextConfiguration(classes={Eindopdrachtv3Application.class})
-//@EnableConfigurationProperties
+//@RunWith(SpringRunner.class)
+//@AutoConfigureMockMvc(addFilters = false)
 //class ExamControllerTest {
 //
 //    @Autowired
@@ -42,6 +45,7 @@
 //
 //    @MockBean
 //    ExamService mockService;
+//
 //    @MockBean
 //    ExamRepository mockRepository;
 //
@@ -66,9 +70,29 @@
 //    void getExamById() {
 //    }
 //
+//    @Test
+//    void deleteExamById_TestSuccess() throws Exception {
+//        Mockito
+//                .when(mockRepository.findById(exam.getId()))
+//                .thenReturn(Optional.of(exam));
+//
+//        mockMvc.perform(MockMvcRequestBuilders
+//                .delete("exams/2")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk()
+//        );
+//
+//    }
 //
 //
-//    // keep getting an error that in UserDetailsService a bean is missing..
+//}
+//
+//
+//
+//
+//
+//
+//// keep getting an error that in UserDetailsService a bean is missing..
 ////    @Test
 ////    void deleteExamById_TestSuccess() throws Exception {
 ////        Mockito
@@ -82,9 +106,6 @@
 ////        );
 ////
 ////    }
-//}
-//
-//
 //
 //
 ////    @Test
