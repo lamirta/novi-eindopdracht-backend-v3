@@ -6,6 +6,7 @@ import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.Authority;
+import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService{
             udto.setPassword(u.getPassword());
             udto.setEmail(u.getEmail());
             udto.setEnabled(u.isEnabled());
-            udto.setAuthorities(u.getAuthorities());
+//            udto.setAuthorities(u.getAuthorities());
             return udto;
         }else {
             throw new UsernameNotFoundException(username);
@@ -56,7 +57,10 @@ public class UserServiceImpl implements UserService{
             throw new BadRequestException("username " + userDto.getUsername() + " taken");
         }
         User newUser = fromDtoToUser(userDto);
+        newUser.setEnabled(true);
+
         userRepository.save(newUser);
+        addAuthority(newUser.getUsername(), "ROLE_USER");
         return userDto;
     }
 
@@ -141,7 +145,20 @@ public class UserServiceImpl implements UserService{
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setEnabled(userDto.isEnabled());
-        user.setAuthorities(userDto.getAuthorities());
+        user.addAuthority(new Authority(userDto.getUsername(), "ROLE_USER"));
+
+        return user;
+    }
+
+    public User fromDtoToUserWith(UserDto userDto) {
+
+        var user = new User();
+
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setEmail(userDto.getEmail());
+        user.setEnabled(userDto.isEnabled());
+        user.addAuthority(new Authority(userDto.getUsername(), "ROLE_USER"));
 
         return user;
     }

@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtv3.controllers;
 import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.services.UserServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,14 +36,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto dto) {
-        UserDto newUser = service.createUser(dto);
-        service.addAuthority(newUser.getUsername(),
-                "ROLE_USER");
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{username}").buildAndExpand(newUser.getUsername()).toUri();
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto dto) {
+        service.createUser(dto);
 
-        return ResponseEntity.created(location).body(newUser);
+        return new ResponseEntity<>("User aangemaakt!", HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{username}")
