@@ -48,7 +48,7 @@ public class WordListServiceImpl implements WordListService {
     public WordListDto createWordList(WordListDto wordListDto) {
         boolean existsTitle = wordListRepository.existsById(wordListDto.getTitle());
         if (existsTitle) {
-            throw new BadRequestException("title" + wordListDto.getTitle() + "taken");
+            throw new BadRequestException("Titel '" + wordListDto.getTitle() + "' bestaat al");
         }
         WordList wl = new WordList();
 

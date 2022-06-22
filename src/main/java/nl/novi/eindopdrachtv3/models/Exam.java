@@ -45,7 +45,7 @@ public class Exam {
         this.timestamp = timestamp;
         this.wordList = wordList;
         this.userProfile = userProfile;
-        this.timestamp = LocalDateTime.now();
+//        this.timestamp = LocalDateTime.now();
     }
 
     public Long getId() {

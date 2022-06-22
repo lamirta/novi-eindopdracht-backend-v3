@@ -26,7 +26,7 @@ public class UserDto {
     public Set<Authority> authorities = new HashSet<>();
 
     private UserProfile userProfile;
-    
+
 
     public UserDto() {
     }
@@ -76,9 +76,9 @@ public class UserDto {
     public Set<Authority> getAuthorities() {
         return authorities;
     }
-//    public void setAuthorities(Set<Authority> authorities) {
-//        this.authorities = authorities;
-//    }
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
