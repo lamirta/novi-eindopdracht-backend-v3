@@ -112,6 +112,18 @@ public class UserProfileServiceImpl implements UserProfileService {
             throw new RecordNotFoundException();
         }
     }
+    @Override
+    public UserProfileDto getUserProfileByUsername(String username) {
+//        if (userProfileRepository.findByUsername(username)){
+            UserProfile up = userProfileRepository.findByUsername(username);
+            UserProfileDto dto = fromUserPrToDto(up);
+            return dto;
+//        } else {
+//            throw new RecordNotFoundException("geen user profiel gevonden");
+//        }
+
+//        return userProfileRepository.findByUsername(username);
+    }
 
 
     // methodes voor omzetten van dto naar entitie en andersom.
@@ -158,3 +170,4 @@ public class UserProfileServiceImpl implements UserProfileService {
 //            throw new RecordNotFoundException("geen user profiel gevonden");
 //        }
 //    }
+

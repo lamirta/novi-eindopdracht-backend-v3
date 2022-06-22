@@ -14,7 +14,7 @@ public interface UserProfileService {
     UserProfileDto updateUserProfile(Long id, UserProfileDto dto);
     void assignImageToUserProfile(Long id, Long imageId);
     void assignUserToUserProfile(Long id, String username);
-
+    UserProfileDto getUserProfileByUsername(String username);
     // UserProfileDto getUserProfileByUsername(User username);
     // is dit mogelijk??
 }
