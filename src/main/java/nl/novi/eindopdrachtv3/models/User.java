@@ -20,7 +20,7 @@ public class User {
 
     @OneToOne(mappedBy = "username")
     @JsonIgnore
-    private UserProfile userProfile;
+    public UserProfile userProfile;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -31,6 +31,29 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
 
     public User() {
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.authorities = authorities;
+    }
+
+    public User(String username, String password, String email, boolean enabled, UserProfile userProfile, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.userProfile = userProfile;
+        this.authorities = authorities;
     }
 
     public String getUsername() {
@@ -61,12 +84,19 @@ public class User {
         this.enabled = enabled;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
     public Set<Authority> getAuthorities() {
         return authorities;
     }
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
+//    public void setAuthorities(Set<Authority> authorities) {
+//        this.authorities = authorities;
+//    }
 
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);

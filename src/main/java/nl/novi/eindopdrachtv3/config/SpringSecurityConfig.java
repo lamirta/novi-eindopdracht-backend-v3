@@ -32,16 +32,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService);
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
+//    @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
+//        return super.authenticationManagerBean();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -51,19 +53,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http     // deze allemaal nog even goed zetten, dubbel check!!
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST, "/users/{username}/enabled").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET,"/userprofiles").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST,"/users/**").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.POST,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.PUT,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.DELETE,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.GET,"/exams").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.DELETE,"/exams/**").hasAnyRole("ADMIN", "DOCENT")
-//                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
+//                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.POST, "/users/{username}/enabled").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.GET,"/userprofiles").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.POST,"/users/**").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.POST,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.PUT,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.DELETE,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.GET,"/exams").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.DELETE,"/exams/**").hasAnyRole("ADMIN", "DOCENT")
+////                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().permitAll()
@@ -74,14 +76,3 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
-
-////    @Override
-////    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-////        auth
-////                .inMemoryAuthentication()
-////                .withUser("jan").password("wachtwoord").roles("USER")
-////                .and()
-////                .withUser("kees").password("wachtwoordddd").roles("ADMIN");
-////    } //password encoder / je kan ook op de plek van wachtwoord nu > {bcrypt}$+incrypted-password
-//
-//    Deze hierrboven wil ik niet, dit is voor het testen even, weghalen voor inleveren!!

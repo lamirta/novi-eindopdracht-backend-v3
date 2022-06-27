@@ -32,6 +32,12 @@ public class Exam {
     public Exam() {
     }
 
+    public Exam(Long id, int wrongEntries, Boolean isPassed) {
+        this.id = id;
+        this.wrongEntries = wrongEntries;
+        this.isPassed = isPassed;
+    }
+
     public Exam(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;
@@ -39,7 +45,7 @@ public class Exam {
         this.timestamp = timestamp;
         this.wordList = wordList;
         this.userProfile = userProfile;
-        this.timestamp = LocalDateTime.now();
+//        this.timestamp = LocalDateTime.now();
     }
 
     public Long getId() {

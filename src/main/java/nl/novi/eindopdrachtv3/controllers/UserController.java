@@ -2,17 +2,31 @@ package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
+import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtv3.services.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
 @RestController
 public class UserController {
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final UserServiceImpl service;
 
     public UserController(UserServiceImpl service) {
@@ -33,15 +47,16 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto dto) {
-        UserDto newUser = service.createUser(dto);
-        return ResponseEntity.ok().body(newUser);
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto dto) {
+        service.createUser(dto);
+
+        return new ResponseEntity<>("User aangemaakt!", HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.updateUser(username, dto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     // denk dat deze het niet doet bij testen.. of misschien een PUT met IdInputDto?

@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.WordListDto;
+import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.WordListRepository;
@@ -45,6 +46,10 @@ public class WordListServiceImpl implements WordListService {
 
     @Override
     public WordListDto createWordList(WordListDto wordListDto) {
+        boolean existsTitle = wordListRepository.existsById(wordListDto.getTitle());
+        if (existsTitle) {
+            throw new BadRequestException("Titel '" + wordListDto.getTitle() + "' bestaat al");
+        }
         WordList wl = new WordList();
 
         wl.setTitle(wordListDto.getTitle());

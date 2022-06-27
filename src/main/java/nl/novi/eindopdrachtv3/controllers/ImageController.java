@@ -33,9 +33,10 @@ public class ImageController {
     }
 
     @PostMapping("/images")
-    public ResponseEntity<Object> uploadImage(@RequestBody MultipartFile file){
-        service.uploadImage(file);
-        return new ResponseEntity<>("Image uploaded!", HttpStatus.CREATED);
+    Image uploadImage(@RequestParam("file") @RequestBody MultipartFile file){
+        Image newImage = service.uploadImage(file);
+//        return new ResponseEntity<>("Image uploaded!", HttpStatus.CREATED);
+        return new Image(newImage.getId());
     }
 
     @DeleteMapping("/images/{id}")

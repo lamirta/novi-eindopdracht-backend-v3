@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+// how to timestemp to set on date made..
+
 public class ExamDto {
 
     private Long id;
@@ -27,10 +29,17 @@ public class ExamDto {
     public ExamDto() {
     }
 
+    public ExamDto(Long id, int wrongEntries, Boolean isPassed) {
+        this.id = id;
+        this.wrongEntries = wrongEntries;
+        this.isPassed = isPassed;
+    }
+
     public ExamDto(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
+        this.timestamp = LocalDateTime.now();
         this.timestamp = LocalDateTime.now();
         this.wordList = wordList;
         this.userProfile = userProfile;

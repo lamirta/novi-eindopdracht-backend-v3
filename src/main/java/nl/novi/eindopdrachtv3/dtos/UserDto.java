@@ -5,6 +5,7 @@ import nl.novi.eindopdrachtv3.models.Authority;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 
 import javax.persistence.Column;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
@@ -18,16 +19,31 @@ public class UserDto {
     @Column(nullable = false)
     public String email;
 
-    @Column(nullable = false)
-    public boolean enabled = true;
+    @Column
+    public boolean enabled;
 
     @JsonSerialize
-    public Set<Authority> authorities;
+    public Set<Authority> authorities = new HashSet<>();
 
-    private UserProfile userProfile;
-    
+    public UserProfile userProfile;
+
 
     public UserDto() {
+    }
+
+    public UserDto(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public UserDto(String username, String password, String email, boolean enabled, UserProfile userProfile, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.userProfile = userProfile;
+        this.authorities = authorities;
     }
 
     public UserDto(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
@@ -64,6 +80,13 @@ public class UserDto {
     }
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public Set<Authority> getAuthorities() {
