@@ -2,9 +2,13 @@ package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
+import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtv3.services.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,6 +20,13 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 public class UserController {
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final UserServiceImpl service;
 
     public UserController(UserServiceImpl service) {
@@ -45,7 +56,6 @@ public class UserController {
     @PutMapping("/users/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.updateUser(username, dto);
-//        String message = "user is updated";
         return ResponseEntity.ok().build();
     }
 

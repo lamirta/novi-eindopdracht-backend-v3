@@ -10,6 +10,7 @@ import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +22,15 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService{
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+
+//    public UserServiceImpl(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     public UserDto getUserByUsername(String username) {
         UserDto udto = new UserDto();
@@ -32,6 +40,7 @@ public class UserServiceImpl implements UserService{
             udto.setUsername(u.getUsername());
             udto.setPassword(u.getPassword());
             udto.setEmail(u.getEmail());
+            udto.setUserProfile(u.getUserProfile());
             udto.setEnabled(u.isEnabled());
             udto.setAuthorities(u.getAuthorities());
             return udto;
@@ -45,11 +54,15 @@ public class UserServiceImpl implements UserService{
         List<UserDto> udtoList = new ArrayList<>();
 
         for (User u : ul) {
-            UserDto udto = new UserDto(u.getUsername(), u.getPassword(), u.getEmail(), u.isEnabled(), u.getAuthorities());
+            UserDto udto = new UserDto(u.getUsername(), u.getPassword(), u.getEmail(), u.isEnabled(), u.getUserProfile(), u.getAuthorities());
             udtoList.add(udto);
         }
         return udtoList;
     }
+
+//    if (data.getPassword() != null) {
+//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
+//    }
 
     public UserDto createUser(UserDto userDto) {
         boolean existsUsername = userRepository.existsById(userDto.getUsername());
@@ -70,24 +83,35 @@ public class UserServiceImpl implements UserService{
     public void updateUser(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new RecordNotFoundException();
+        } else if (userRepository.existsById(updatedUser.getUsername())) {
+            throw new BadRequestException("username " + updatedUser.getUsername() + " taken");
         } else {
         User user = userRepository.findById(username).get();
-        user.setUsername(user.getUsername());
-        user.setPassword(updatedUser.getPassword());
-        user.setEmail(updatedUser.getEmail());
+        if (updatedUser.getUsername() != null) {
+            user.setUsername(updatedUser.getUsername());
+        }
+        if (updatedUser.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        if (updatedUser.getEmail() != null) {
+                user.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getUserProfile() != null) {
+                user.setUserProfile(updatedUser.getUserProfile());
+        }
         userRepository.save(user);
         }
     }
+//            else {
+//            user.setUsername(user.getUsername());
+//        }
 
-    // denk dat deze het niet doet bij testen..
     public void setUserEnabled(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new UsernameNotFoundException(username);
         } else {
             User user = userRepository.findById(username).get();
             user.setUsername(user.getUsername());
-            user.setPassword(user.getPassword());
-            user.setEmail(user.getEmail());
             user.setEnabled(updatedUser.isEnabled());
             userRepository.save(user);
         }
@@ -131,19 +155,29 @@ public class UserServiceImpl implements UserService{
         dto.password = user.getPassword();
         dto.email = user.getEmail();
         dto.enabled = user.isEnabled();
+        dto.userProfile = user.getUserProfile();
         dto.authorities = user.getAuthorities();
 
         return dto;
     }
 
+
     public User fromDtoToUser(UserDto userDto) {
-        var user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setEmail(userDto.getEmail());
-        return user;
+        if (userDto.getPassword() != null) {
+            var user = new User();
+            user.setUsername(userDto.getUsername());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setEmail(userDto.getEmail());
+
+            return user;
+        } else {
+            throw new BadRequestException("password cannot be empty");
+        }
     }
 
+    //    if (data.getPassword() != null) {
+//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
+//    }
 
 //    public User fromDtoToUser(UserDto userDto) {
 //

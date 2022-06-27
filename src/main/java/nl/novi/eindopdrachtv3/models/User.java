@@ -20,7 +20,7 @@ public class User {
 
     @OneToOne(mappedBy = "username")
     @JsonIgnore
-    private UserProfile userProfile;
+    public UserProfile userProfile;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -37,6 +37,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.authorities = authorities;
     }
 
     public User(String username, String password, String email, boolean enabled, UserProfile userProfile, Set<Authority> authorities) {

@@ -104,7 +104,7 @@ class WordListServiceImplTest {
         // then
         assertThatThrownBy(() ->wordListService.createWordList(dto))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("title" + dto.getTitle() + "taken");
+                .hasMessageContaining("Titel '" + dto.getTitle() + "' bestaat al");
 
         verify(wordListRepository, never()).save(any());
     }

@@ -25,7 +25,7 @@ public class UserDto {
     @JsonSerialize
     public Set<Authority> authorities = new HashSet<>();
 
-    private UserProfile userProfile;
+    public UserProfile userProfile;
 
 
     public UserDto() {
@@ -35,6 +35,15 @@ public class UserDto {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public UserDto(String username, String password, String email, boolean enabled, UserProfile userProfile, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.userProfile = userProfile;
+        this.authorities = authorities;
     }
 
     public UserDto(String username, String password, String email, boolean enabled, Set<Authority> authorities) {
@@ -71,6 +80,13 @@ public class UserDto {
     }
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public Set<Authority> getAuthorities() {
