@@ -22,15 +22,12 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService{
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    public UserServiceImpl(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     public UserDto getUserByUsername(String username) {
         UserDto udto = new UserDto();

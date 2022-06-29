@@ -59,7 +59,7 @@ public class UserProfileController {
     }
 
     //TRY OUT:
-    // hoe haal ik nu iets op uit repo op basis van usermname??
+    // hoe haal ik nu iets op uit repo op basis van username??
     @GetMapping("/userprofiles/user/{username}")
     public ResponseEntity<UserProfileDto> getUserProfileByUsername(@PathVariable("username") String username) {
         UserProfileDto up = service.getUserProfileByUsername(username);

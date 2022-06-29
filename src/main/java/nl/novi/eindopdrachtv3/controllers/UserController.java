@@ -24,9 +24,6 @@ public class UserController {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     private final UserServiceImpl service;
 
     public UserController(UserServiceImpl service) {
