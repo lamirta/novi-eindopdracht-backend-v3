@@ -6,6 +6,7 @@ import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
+import org.hibernate.annotations.Filter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +35,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ContextConfiguration(classes={Eindopdrachtv3Application.class})
 @EnableConfigurationProperties
+@AutoConfigureMockMvc(addFilters = false)
 class UserServiceImplTest {
 
     @InjectMocks
@@ -168,8 +171,8 @@ class UserServiceImplTest {
 //        String encodedPassword = passwordEncoder.encode(dto.getPassword());
 //
 //        assertEquals(dto.getUsername(), u.getUsername());
-////        assertEquals(dto.getPassword(), u.getPassword()); //will be encoded..
-////        assertEquals(encodedPassword, u.getPassword());
+////        assertEquals(dto.getPassword(), u.getPassword());
+//        assertEquals(encodedPassword, u.getPassword());
 //        assertEquals(dto.getEmail(), u.getEmail());
 //    }
 
