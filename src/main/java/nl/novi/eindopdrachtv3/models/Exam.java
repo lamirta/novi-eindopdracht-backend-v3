@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtv3.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +12,16 @@ import java.time.LocalDateTime;
 public class Exam {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "exam_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "5"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     Long id;
 
     private int wrongEntries;

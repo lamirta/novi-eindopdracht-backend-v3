@@ -13,6 +13,7 @@ import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +52,12 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto createUserProfile(UserProfileDto dto) {
-        userProfileRepository.save(fromDtoToUserPr(dto));
-        return dto;
+        UserProfile up = fromDtoToUserPr(dto);
+        userProfileRepository.save(up);
+
+        UserProfileDto newDto = fromUserPrToDto(up);
+
+        return newDto;
     }
 
     @Override
@@ -65,14 +70,18 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (userProfileRepository.findById(id).isPresent()) {
 
             UserProfile up = userProfileRepository.findById(id).get();
-            up.setId(up.getId());
-            up.setFirstName(dto.getFirstName());
-            up.setLastName(dto.getLastName());
-            up.setAge(dto.getAge());
-            up.setSchool(dto.getSchool());
-            up.setUsername(dto.getUsername());
-            up.setProfilePic(dto.getProfilePic());
-            up.setExams(dto.getExams());
+            if (dto.getFirstName() != null) {
+                up.setFirstName(dto.getFirstName());
+            }
+            if (dto.getLastName() != null) {
+                up.setLastName(dto.getLastName());
+            }
+            if (dto.getAge() != null) {
+                up.setAge(dto.getAge());
+            }
+            if (dto.getSchool() != null) {
+                up.setSchool(dto.getSchool());
+            }
             userProfileRepository.save(up);
 
             return dto;
@@ -143,6 +152,21 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     public UserProfile fromDtoToUserPr(UserProfileDto upDto) {
+        var up = new UserProfile();
+
+//        up.setId(upDto.getId());
+        up.setFirstName(upDto.getFirstName());
+        up.setLastName(upDto.getLastName());
+        up.setAge(upDto.getAge());
+        up.setSchool(upDto.getSchool());
+        up.setUsername(upDto.getUsername());
+        up.setProfilePic(upDto.getProfilePic());
+        up.setExams(upDto.getExams());
+
+        return up;
+    }
+
+    public UserProfile fromDtoToUserPrId(UserProfileDto upDto) {
         var up = new UserProfile();
 
         up.setId(upDto.getId());

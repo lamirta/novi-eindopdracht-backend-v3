@@ -25,8 +25,6 @@ public class ImageController {
         return ResponseEntity.ok().body(service.getImageById(id));
     }
 
-    //deze hieronder zijn goed nu, nog wel testen..
-
     @GetMapping("/images")
     public Collection<Image> getAllImages(){
         return service.getAllImages();

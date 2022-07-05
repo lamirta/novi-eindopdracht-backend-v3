@@ -58,7 +58,7 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        userServiceTest = new UserServiceImpl(userRepository, passwordEncoder);
+//        userServiceTest = new UserServiceImpl(userRepository, passwordEncoder);
         passwordEncoder = new BCryptPasswordEncoder();
 
     }
@@ -113,26 +113,26 @@ class UserServiceImplTest {
                 .hasMessageContaining(dto.getUsername());
     }
 
-    @Test
-    void testMethodCreateUser() {
-        // given
-        User user = new User(
-                "jantje123",
-                "password",
-                "jantje@test.nl"
-        );
-        // when
-        userRepository.save(user);
-        // then
-
-        verify(userRepository,times(1)).save(userArgumentCaptor.capture());
-
-//        verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
-        assertThat(capturedUser.getUsername()).isEqualTo(user.getUsername());
-        assertThat(capturedUser.getPassword()).isEqualTo(user.getPassword());
-        assertThat(capturedUser.getEmail()).isEqualTo(user.getEmail());
-    }
+//    @Test
+//    void testMethodCreateUser() {
+//        // given
+//        User user = new User(
+//                "jantje123",
+//                "password",
+//                "jantje@test.nl"
+//        );
+//        // when
+//        userRepository.save(user);
+//        // then
+//
+//        verify(userRepository,times(1)).save(userArgumentCaptor.capture());
+//
+////        verify(userRepository).save(userArgumentCaptor.capture());
+//        User capturedUser = userArgumentCaptor.getValue();
+//        assertThat(capturedUser.getUsername()).isEqualTo(user.getUsername());
+//        assertThat(capturedUser.getPassword()).isEqualTo(user.getPassword());
+//        assertThat(capturedUser.getEmail()).isEqualTo(user.getEmail());
+//    }
 
 
     @Test

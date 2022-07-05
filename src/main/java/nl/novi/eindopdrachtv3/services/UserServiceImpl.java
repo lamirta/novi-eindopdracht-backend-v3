@@ -2,12 +2,15 @@ package nl.novi.eindopdrachtv3.services;
 
 import lombok.AllArgsConstructor;
 import nl.novi.eindopdrachtv3.dtos.UserDto;
+import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.Authority;
 import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.User;
+import nl.novi.eindopdrachtv3.models.UserProfile;
+import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,12 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserProfileServiceImpl userProfileServiceImpl;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,9 +66,6 @@ public class UserServiceImpl implements UserService{
         return udtoList;
     }
 
-//    if (data.getPassword() != null) {
-//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
-//    }
 
     public UserDto createUser(UserDto userDto) {
         boolean existsUsername = userRepository.existsById(userDto.getUsername());
@@ -67,9 +73,18 @@ public class UserServiceImpl implements UserService{
             throw new BadRequestException("username " + userDto.getUsername() + " taken");
         }
         User newUser = fromDtoToUser(userDto);
-        newUser.addAuthority(new Authority(newUser.getUsername(), "ROLE_USER"));
+        newUser.addAuthority(new Authority(newUser.getUsername(), "STUDENT"));
         newUser.setEnabled(true);
+
+        UserProfileDto upDto = new UserProfileDto();
+        UserProfileDto SavedUpDto = userProfileServiceImpl.createUserProfile(upDto);
+
+//        newUser.setUserProfile(userProfileServiceImpl.fromDtoToUserPrId(SavedUpDto));
+
         userRepository.save(newUser);
+
+        userProfileServiceImpl.assignUserToUserProfile(SavedUpDto.getId(), userDto.getUsername());
+
         return userDto;
     }
 
@@ -184,7 +199,7 @@ public class UserServiceImpl implements UserService{
 //        user.setPassword(userDto.getPassword());
 //        user.setEmail(userDto.getEmail());
 //        user.setEnabled(userDto.isEnabled());
-//        user.addAuthority(new Authority(userDto.getUsername(), "ROLE_USER"));
+//        user.addAuthority(new Authority(userDto.getUsername(), "STUDENT"));
 //
 //        return user;
 //    }

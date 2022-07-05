@@ -16,7 +16,6 @@ public class UserProfileDto {
     private Integer age;
     private String school;
 
-    @Column(nullable = false, unique = true)
     private User username;
     private Image profilePic;
     private List<Exam> exams;
