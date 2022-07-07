@@ -12,9 +12,11 @@ public interface UserProfileService {
     UserProfileDto createUserProfile(UserProfileDto dto);
     void deleteUserProfile(Long id);
     UserProfileDto updateUserProfile(Long id, UserProfileDto dto);
-    void assignImageToUserProfile(Long id, Long imageId);
+    void assignImageToProfile(Long profileId, String fileName);
     void assignUserToUserProfile(Long id, String username);
-    UserProfileDto getUserProfileByUsername(String username);
+
+//    void assignImageToUserProfile(Long id, Long imageId);
+
     // UserProfileDto getUserProfileByUsername(User username);
     // is dit mogelijk??
 }

@@ -9,14 +9,20 @@ import javax.persistence.*;
 public class Image {
 
     @Id
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
+    private String fileName;
+
     @GeneratedValue
+    @Column(unique = true)
     private Long id;
 
-    @Lob
-    public byte[] image;
-
     private String type;
+
+    private String url;
+
+//    @Lob
+//    public byte[] image;
+
 
     @OneToOne(mappedBy = "profilePic")
     @JsonIgnore
@@ -29,11 +35,25 @@ public class Image {
         this.id = id;
     }
 
-    public Image(Long id, byte[] image, String type, UserProfile userProfile) {
+    public Image(Long id, String fileName, String type, String url, UserProfile userProfile) {
         this.id = id;
-        this.image = image;
+        this.fileName = fileName;
         this.type = type;
+        this.url = url;
         this.userProfile = userProfile;
+    }
+
+    public Image(Long id, String fileName, String type, String url) {
+        this.id = id;
+        this.fileName = fileName;
+        this.type = type;
+        this.url = url;
+    }
+
+    public Image(String fileName, String type, String url) {
+        this.fileName = fileName;
+        this.type = type;
+        this.url = url;
     }
 
     public Long getId() {
@@ -43,11 +63,18 @@ public class Image {
         this.id = id;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getFileName() {
+        return fileName;
     }
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getType() {
@@ -63,6 +90,15 @@ public class Image {
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
+
+    //    public byte[] getImage() {
+//        return image;
+//    }
+//    public void setImage(byte[] image) {
+//        this.image = image;
+//    }
+
+
 }
 
 
@@ -71,3 +107,11 @@ public class Image {
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_profile_id", referencedColumnName = "id")
 //    private UserProfile userProfile;
+
+// Try out..
+//    public Image(Long id, byte[] image, String type, UserProfile userProfile) {
+//        this.id = id;
+//        this.image = image;
+//        this.type = type;
+//        this.userProfile = userProfile;
+//    }

@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtv3.services;
 import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
+import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.models.WordList;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
@@ -91,16 +93,16 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public void assignImageToUserProfile(Long id, Long imageId) {
-        var optionalUserProfile = userProfileRepository.findById(id);
-        var optionalImage = imageRepository.findById(imageId);
+    public void assignImageToProfile(Long profileId, String fileName) {
+        Optional<UserProfile> optionalProfile = userProfileRepository.findById(profileId);
+        Optional<Image> optImg = imageRepository.findByFileName(fileName);
 
-        if(optionalUserProfile.isPresent() && optionalImage.isPresent()) {
-            var userProfile = optionalUserProfile.get();
-            var image = optionalImage.get();
+        if (optionalProfile.isPresent() && optImg.isPresent()) {
+            UserProfile profile = optionalProfile.get();
+            Image img = optImg.get();
 
-            userProfile.setProfilePic(image);
-            userProfileRepository.save(userProfile);
+            profile.setProfilePic(img);
+            userProfileRepository.save(profile);
         } else {
             throw new RecordNotFoundException();
         }
@@ -120,19 +122,6 @@ public class UserProfileServiceImpl implements UserProfileService {
         } else {
             throw new RecordNotFoundException();
         }
-    }
-
-    @Override
-    public UserProfileDto getUserProfileByUsername(String username) {
-//        if (userProfileRepository.findByUsername(username)){
-            UserProfile up = userProfileRepository.findByUsername(username);
-            UserProfileDto dto = fromUserPrToDto(up);
-            return dto;
-//        } else {
-//            throw new RecordNotFoundException("geen user profiel gevonden");
-//        }
-
-//        return userProfileRepository.findByUsername(username);
     }
 
 
@@ -184,6 +173,22 @@ public class UserProfileServiceImpl implements UserProfileService {
 }
 
 
+//    @Override
+//    public void assignImageToUserProfile(Long id, Long imageId) {
+//        var optionalUserProfile = userProfileRepository.findById(id);
+//        var optionalImage = imageRepository.findById(imageId);
+//
+//        if(optionalUserProfile.isPresent() && optionalImage.isPresent()) {
+//            var userProfile = optionalUserProfile.get();
+//            var image = optionalImage.get();
+//
+//            userProfile.setProfilePic(image);
+//            userProfileRepository.save(userProfile);
+//        } else {
+//            throw new RecordNotFoundException();
+//        }
+//    }
+
 
 //    @Override
 //    public UserProfileDto getUserProfileByUsername(User username) {
@@ -194,5 +199,19 @@ public class UserProfileServiceImpl implements UserProfileService {
 //        } else {
 //            throw new RecordNotFoundException("geen user profiel gevonden");
 //        }
+//    }
+
+
+//    @Override
+//    public UserProfileDto getUserProfileByUsername(String username) {
+////        if (userProfileRepository.findByUsername(username)){
+//        UserProfile up = userProfileRepository.findByUsername(username);
+//        UserProfileDto dto = fromUserPrToDto(up);
+//        return dto;
+////        } else {
+////            throw new RecordNotFoundException("geen user profiel gevonden");
+////        }
+//
+////        return userProfileRepository.findByUsername(username);
 //    }
 
