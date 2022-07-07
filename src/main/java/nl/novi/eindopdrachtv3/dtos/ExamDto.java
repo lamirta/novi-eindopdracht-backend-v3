@@ -22,7 +22,6 @@ public class ExamDto {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
 
-
     private WordList wordList;
     private UserProfile userProfile;
 

@@ -121,6 +121,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             throw new RecordNotFoundException();
         }
     }
+
     @Override
     public UserProfileDto getUserProfileByUsername(String username) {
 //        if (userProfileRepository.findByUsername(username)){

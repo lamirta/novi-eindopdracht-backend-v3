@@ -2,6 +2,8 @@ package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.services.ImageService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Collection;
 
 @CrossOrigin
@@ -20,8 +23,9 @@ public class ImageController {
         this.service = service;
     }
 
-    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+        @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImageById(@PathVariable Long id) {
+
         return ResponseEntity.ok().body(service.getImageById(id));
     }
 
@@ -45,50 +49,28 @@ public class ImageController {
 }
 
 
-      // hier eindje opweg voor local file storage system
 
-//    @GetMapping(value = "/images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
-//    ResponseEntity<Resource> getImageByImageName(@PathVariable String imageName, HttpServletRequest request) {
-//        Resource resource = service.getImageById(imageName);
+//    @GetMapping(value = "/images/{id}")
+//    ResponseEntity<Resource> getImageById(@PathVariable Long id, HttpServletRequest request) {
 //
-//        Image img = service.getImageById(imageName).get();
-//        return img.image;
-//    }
+//        Resource resource = service.getImageById(id);
 //
+////        this mediaType decides witch type you accept if you only accept 1 type
+////        MediaType contentType = MediaType.IMAGE_JPEG;
+////        this is going to accept multiple types
+//        String mimeType;
 //
-//    @PostMapping("/images/uploads")
-//    ImageUploadResponse uploadImage(@RequestParam("file") MultipartFile file) {
+//        try{
+//            mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//        } catch (IOException e) {
+//            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+//        }
 //
-//        String imageName = service.storeImage(file);
-//        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(imageName).toUriString();
-//        String mediaType = file.getContentType();
-//
-//        return new ImageUploadResponse(imageName, mediaType, url);
-//    }
-
-      // hier eventueel nog naar kijken
-
-//    //produces = MediaType.MULTIPART_MIXED_VALUE
-//    @GetMapping(value = "/images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
-//    public @ResponseBody byte[] getImageByImageName(@PathVariable String imageName) {
-//        Image img = service.getImageById(imageName).get();
-//        return img.image;
+////        for download attachment use next line
+////        return ResponseEntity.ok().contentType(contentType).header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + resource.getFilename()).body(resource);
+////        for showing image in browser
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
 //    }
 
 
-//    @PutMapping("/image/{imageName}")
-//    public ResponseEntity<Image> updateImage(@PathVariable("imageName") String imageName, @RequestBody MultipartFile file) {
-////        Image img = service.updateImage(imageName, file);
-////        return img;
-//          service.updateImage(imageName, file);
-//          return ResponseEntity.noContent().build();
-////        return img.image;service.updateImage(imageName, file);
-//    }
 
-
-//    @GetMapping(value = "/images/{username}", produces = MediaType.IMAGE_JPEG_VALUE)
-//    public @ResponseBody byte[] getImageByUsername(@PathVariable String username) {
-//        Image img = imageRepository.findById(id).get();
-//        return img.image;
-//    }
-//

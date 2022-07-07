@@ -7,9 +7,7 @@ import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.Authority;
-import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.User;
-import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +86,7 @@ public class UserServiceImpl implements UserService{
         return userDto;
     }
 
+    // not needed in current FE, delete UserProfile also auto-deletes User.
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
@@ -95,19 +94,19 @@ public class UserServiceImpl implements UserService{
     public void updateUser(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new RecordNotFoundException();
-        } else if (userRepository.existsById(updatedUser.getUsername())) {
-            throw new BadRequestException("username " + updatedUser.getUsername() + " taken");
+//        } else if (userRepository.existsById(updatedUser.getUsername())) {
+//            throw new BadRequestException("username " + updatedUser.getUsername() + " taken");
         } else {
         User user = userRepository.findById(username).get();
-        if (updatedUser.getUsername() != null) {
-            user.setUsername(updatedUser.getUsername());
-        }
+//        if (updatedUser.getUsername() != null) {
+//            user.setUsername(updatedUser.getUsername());
+//        }
         if (updatedUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
         if (updatedUser.getEmail() != null) {
                 user.setEmail(updatedUser.getEmail());
-        }
+        } // usProf kan eigenlijk ook weg, niet gebruikt vanuit FE
         if (updatedUser.getUserProfile() != null) {
                 user.setUserProfile(updatedUser.getUserProfile());
         }
