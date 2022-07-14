@@ -1,15 +1,11 @@
 package nl.novi.eindopdrachtv3.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.models.WordList;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-// how to timestemp to set on date made..
 
 public class ExamDto {
 
@@ -19,9 +15,7 @@ public class ExamDto {
     @NotNull
     private Boolean isPassed;
 
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
-    private LocalDateTime timestamp;
-
+    private LocalDateTime timestamp = LocalDateTime.now();
     private WordList wordList;
     private UserProfile userProfile;
 
@@ -34,12 +28,12 @@ public class ExamDto {
         this.isPassed = isPassed;
     }
 
+
     public ExamDto(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
         this.id = id;
         this.wrongEntries = wrongEntries;
         this.isPassed = isPassed;
-        this.timestamp = LocalDateTime.now();
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = timestamp;
         this.wordList = wordList;
         this.userProfile = userProfile;
     }
@@ -69,7 +63,7 @@ public class ExamDto {
         return timestamp;
     }
     public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = timestamp;
     }
 
     public WordList getWordList() {

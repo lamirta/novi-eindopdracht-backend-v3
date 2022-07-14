@@ -44,7 +44,11 @@ public class ImageService {
     public String uploadImage(MultipartFile file, String url){
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
-        Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
+//        Next line to save file in directory for Windows:
+//        Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
+
+//        Next line to save file in directory for Mac:
+        Path filePath = Paths.get(fileStoragePath + "/" + fileName);
 
         try {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -52,7 +56,6 @@ public class ImageService {
             throw new RuntimeException("Issue in storing the file", e);
         }
 
-        // wordt id opgeslagen nu / aangemaakt in storage?
         imageRepository.save(new Image(fileName, file.getContentType(), url));
 
         return fileName;

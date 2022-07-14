@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,15 +38,12 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-@ContextConfiguration(classes={Eindopdrachtv3Application.class})
-@EnableConfigurationProperties
+@AutoConfigureMockMvc(addFilters = false)
 class ExamServiceImplTest {
 
     @InjectMocks
@@ -182,43 +180,3 @@ class ExamServiceImplTest {
     }
 
 }
-
-
-
-//    @Test
-//    void deleteExamById_TestSuccess(){
-//
-//        Mockito
-//                .when(mockExamRepository.findById(exam.getId()))
-//                .thenReturn(Optional.of(exam));
-//
-//        Optional<Exam> examFound = mockExamRepository.findById(2L);
-//        mockExamRepository.deleteById(examFound.get().getId());
-//
-////        var expected = null
-//        var actual = examFound.get().getId();
-//
-//        // Assert / Then
-//        assertNull(actual);
-//
-//    }
-
-
-
-
-//    @Test
-//    void TestGetExamById(){
-//
-//        Mockito
-//                .when(mockExamRepository.findById(exam.getId()))
-//                .thenReturn(Optional.of(exam));
-//
-//        Optional<Exam> examFound = mockExamRepository.findById(2L);
-//
-////        var expected = null
-//        var actual = examFound.get().getId();
-//
-//        // Assert / Then
-//        Assertions.assertEquals(2, actual);
-//
-//    }

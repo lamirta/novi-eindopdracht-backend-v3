@@ -81,11 +81,4 @@ public class WordListServiceImpl implements WordListService {
             throw new TitleNotFoundException(title);
         }
     }
-
 }
-
-//    @Override
-//    public void deleteWordsInWordList(List<String> words) {
-//        wordListRepository.deleteAllById(words);
-//    }
-//    Deze doet het nog niet helaas.. maar is volgens mij hetzelfde als de update method.

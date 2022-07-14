@@ -86,10 +86,12 @@ public class UserServiceImpl implements UserService{
         return userDto;
     }
 
+
     // not needed in current FE, delete UserProfile also auto-deletes User.
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
+
 
     public void updateUser(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
@@ -185,22 +187,5 @@ public class UserServiceImpl implements UserService{
             throw new BadRequestException("password cannot be empty");
         }
     }
-
-    //    if (data.getPassword() != null) {
-//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
-//    }
-
-//    public User fromDtoToUser(UserDto userDto) {
-//
-//        var user = new User();
-//
-//        user.setUsername(userDto.getUsername());
-//        user.setPassword(userDto.getPassword());
-//        user.setEmail(userDto.getEmail());
-//        user.setEnabled(userDto.isEnabled());
-//        user.addAuthority(new Authority(userDto.getUsername(), "STUDENT"));
-//
-//        return user;
-//    }
 
 }

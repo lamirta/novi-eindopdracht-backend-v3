@@ -1,7 +1,5 @@
 package nl.novi.eindopdrachtv3.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.istack.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,8 +24,6 @@ public class Exam {
 
     private int wrongEntries;
     private Boolean isPassed;
-
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
 
     @ManyToOne
@@ -42,21 +38,6 @@ public class Exam {
     public Exam() {
     }
 
-    public Exam(Long id, int wrongEntries, Boolean isPassed) {
-        this.id = id;
-        this.wrongEntries = wrongEntries;
-        this.isPassed = isPassed;
-    }
-
-    public Exam(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
-        this.id = id;
-        this.wrongEntries = wrongEntries;
-        this.isPassed = isPassed;
-        this.timestamp = timestamp;
-        this.wordList = wordList;
-        this.userProfile = userProfile;
-//        this.timestamp = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;

@@ -32,9 +32,8 @@ public class UserProfile {
     @JoinColumn(name ="username", referencedColumnName = "username")
     private User username;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_pic_id", referencedColumnName = "id")
-    private Image profilePic;
+    @OneToOne
+    Image profilePic;
 
     @OneToMany(mappedBy = "userProfile")
     @JsonIgnore
@@ -100,9 +99,3 @@ public class UserProfile {
         this.exams = exams;
     }
 }
-
-
-
-//    @OneToOne(mappedBy = "userProfile")
-//    @JsonIgnore
-//    private Image profilePic;

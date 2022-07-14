@@ -4,7 +4,6 @@ import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.models.User;
 
-import javax.persistence.Column;
 import java.util.List;
 
 public class UserProfileDto {
@@ -26,6 +25,7 @@ public class UserProfileDto {
     public UserProfileDto(Long id) {
         this.id = id;
     }
+    
 
     public Long getId() {
         return id;

@@ -16,6 +16,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -32,21 +33,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest
-@ContextConfiguration(classes={Eindopdrachtv3Application.class})
-@EnableConfigurationProperties
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc(addFilters = false)
 class WordListServiceImplTest {
 
-    @InjectMocks
+    @Autowired
     private WordListServiceImpl wordListService;
 
     @MockBean
     private WordListRepository wordListRepository;
     @Captor
     ArgumentCaptor<WordList> wlArgumentCaptor;
-    @Captor
-    ArgumentCaptor<WordListDto> dtoArgumentCaptor;
 
     @Mock
     WordList wordList;
@@ -81,8 +79,6 @@ class WordListServiceImplTest {
                 .thenReturn(Optional.of(wordList));
 
         Optional<WordList> wlFound = wordListRepository.findById("kleuren");
-
-//        WordListDto found =
         wordListService.getWordListByTitle(wordList.getTitle());
 
         String expected = "kleuren";
@@ -108,7 +104,6 @@ class WordListServiceImplTest {
 
         verify(wordListRepository, never()).save(any());
     }
-
 
     // deze test zegt nu dat hij eigenlijk niets covered..
     @Test
@@ -147,88 +142,4 @@ class WordListServiceImplTest {
                 .hasMessageContaining(dto.getTitle());
     }
 
-
-
-//    @Test
-//    void deleteWordList() {
-//    }
-
 }
-
-
-
-
-//    @Test
-//    void testMethodCreateWordList() {
-//        // given
-//        wordListDto.setTitle("numbers");
-//        WordList wl = new WordList();
-//
-//        // when
-//        wordListService.createWordList(wordListDto);
-//        wordListRepository.save(wordList);
-//        // then
-//
-//        verify(wordListRepository,times(1)).save(wlArgumentCaptor.capture());
-//
-//// hoezo pakt ie het laatste deel van deze methode niet in deze test?
-//        WordList capturedWl = wlArgumentCaptor.getValue();
-//        assertThat(capturedWl.getTitle()).isEqualTo(wordList.getTitle());
-//        assertThat(capturedWl.getWords()).isEqualTo(wordList.getWords());
-//    }
-
-
-//    @Test
-//    void testMethodCreateWordListRepoSavedEntityFromDto() {
-//        // given
-//        wordListRepository = null;
-//        wordListDto.setTitle("numbers");
-//
-//        // when
-//        var dtoOutput = wordListService.createWordList(wordListDto);
-//
-//        // then
-//        verify(wordListRepository.existsById("numbers"));
-//    }
-
-
-
-
-
-
-
-
-
-//    @Test
-//    void nonUniqueTitleShouldReturnError() {
-//        // Arrange
-//        Mockito.when(wordListRepository.existsById(wordListDto.getTitle())).thenReturn(true);
-//
-//        // Act
-//        ResponseEntity<?> responseEntity = wordListService.createWordList(wordListDto);
-//
-//        // Assert
-//        Assertions.assertEquals(400, responseEntity.getStatusCodeValue());
-//        Assertions.assertTrue(responseEntity.getBody() instanceof ErrorResponse);
-//        Assertions.assertEquals(1, ((ErrorResponse) responseEntity.getBody()).getErrors().size());
-//
-//        Assertions.assertTrue(((((ErrorResponse) responseEntity.getBody()).getErrors()).containsKey("title")));
-//        Assertions.assertSame("The title already exists.", ((ErrorResponse) responseEntity.getBody()).getErrors().get("title"));
-//    }
-
-
-//    @Test
-//    void testMethodCreateWordList() {
-//        // given wordList
-//
-//        // when
-//        wordListRepository.save(wordList);
-//        // then
-//
-//        verify(wordListRepository,times(1)).save(wlArgumentCaptor.capture());
-//
-////        verify(userRepository).save(userArgumentCaptor.capture());
-//        WordList capturedWl = wlArgumentCaptor.getValue();
-//        assertThat(capturedWl.getTitle()).isEqualTo(wordList.getTitle());
-//        assertThat(capturedWl.getWords()).isEqualTo(wordList.getWords());
-//    }

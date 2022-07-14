@@ -55,6 +55,7 @@ public class UserProfileController {
         return ResponseEntity.noContent().build();
     }
 
+    // Not needed in current FE, iniciated while creating User class
     @PutMapping("/userprofiles/{id}/username")
     public void assignUserToUserProfile(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
         service.assignUserToUserProfile(id, input.username);
@@ -65,15 +66,6 @@ public class UserProfileController {
                                      @RequestBody MultipartFile file) {
 
         Image image = imageController.uploadImage(file);
-
         service.assignImageToProfile(profileId, image.getFileName());
     }
-
 }
-
-
-
-//    @PutMapping("/userprofiles/{id}/profilepic")
-//    public void assignImageToUserProfile(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
-//        service.assignImageToUserProfile(id, input.id);
-//    }
