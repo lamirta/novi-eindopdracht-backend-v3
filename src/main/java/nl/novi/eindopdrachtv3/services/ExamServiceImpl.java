@@ -2,9 +2,11 @@ package nl.novi.eindopdrachtv3.services;
 
 
 import nl.novi.eindopdrachtv3.dtos.ExamDto;
+import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.models.Exam;
 
+import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.repositories.ExamRepository;
 import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import nl.novi.eindopdrachtv3.repositories.WordListRepository;
@@ -72,11 +74,25 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public void deleteExamById(Long id) throws RecordNotFoundException {
-        if(!examRepository.findById(id).isEmpty()) {
+        if(examRepository.findById(id).isEmpty()) {
             throw new RecordNotFoundException("exam with id: " + id + " not present");
         }
         examRepository.deleteById(id);
     }
+
+
+    @Override
+    public void deleteAllExamsByUserProfile(Long id) {
+        if(userProfileRepository.findById(id).isEmpty()) {
+            throw new RecordNotFoundException("no userprofile with id: " + id + " present");
+        }
+
+        List<Exam> examList = examRepository.getByUserProfile(userProfileRepository.getById(id));
+        examRepository.deleteAll(examList);
+    }
+
+
+
 
     @Override
     public void assignUserProfileToExam(Long id, Long userProfileId) {
@@ -111,41 +127,3 @@ public class ExamServiceImpl implements ExamService {
     }
 
 }
-
-
-
-
-
-
-
-
-// how to get List of Exams with attribute boolean isPassed true??
-//    @Override
-//    public List<ExamDto> getExamsByIsPassed(boolean isPassed) {
-//        List<Exam> el = examRepository.findAll();
-//        List<ExamDto> edtoList = new ArrayList<>();
-//
-//        for(Exam e : el) {
-//            ExamDto edto = new ExamDto(e.getWrongEntries(), e.isPassed(), e.getTimestamp(), e.getWordList());
-//            edtoList.add(edto);
-//        }
-//        return edtoList;
-//    }
-
-
-//    @Override
-//    public List<ExamDto> getPassedExams(boolean isPassed) {
-//        List<ExamDto> edtoList = new ArrayList<>();
-//        if (examRepository.findAllById(<isPassed>true).isPresent()) {
-//            Exam e = examRepository.findById(true).get();
-//            edtoList.setTitle(e.getWrongEntries());
-//            edtoList.setPassed(e.isPassed());
-//            edtoList.setDateTime(e.getDateTime());
-//            return edtoList;
-//        } else {
-//            throw new RecordNotFoundException("Geen geslaagde toetsen gevonden");
-//        }
-//    }
-
-
-//wanneer wordlist relatie gelegd is: @GetMapping met isPassed {true} && wordlist {title} ??

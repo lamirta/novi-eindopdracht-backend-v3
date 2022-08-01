@@ -6,14 +6,10 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-
-
 import java.util.HashSet;
 
 import nl.novi.eindopdrachtv3.dtos.UserDto;
 import nl.novi.eindopdrachtv3.models.Authority;
-import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;

@@ -1,13 +1,8 @@
 package nl.novi.eindopdrachtv3.services;
 
-import nl.novi.eindopdrachtv3.Eindopdrachtv3Application;
 import nl.novi.eindopdrachtv3.dtos.ExamDto;
-import nl.novi.eindopdrachtv3.dtos.WordListDto;
-import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
-import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
 import nl.novi.eindopdrachtv3.models.Exam;
-import nl.novi.eindopdrachtv3.models.User;
 import nl.novi.eindopdrachtv3.models.UserProfile;
 import nl.novi.eindopdrachtv3.models.WordList;
 import nl.novi.eindopdrachtv3.repositories.ExamRepository;
@@ -22,17 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
@@ -95,7 +82,6 @@ class ExamServiceImplTest {
 
     @Test
     void TestGetExamById(){
-
         Mockito
                 .when(mockExamRepository.findById(exam.getId()))
                 .thenReturn(Optional.of(exam));
@@ -106,7 +92,6 @@ class ExamServiceImplTest {
 
         // Assert / Then
         Assertions.assertEquals(2, examFound.get().getId());
-
     }
 
     @Test
@@ -120,8 +105,7 @@ class ExamServiceImplTest {
         given(mockExamRepository.existsById(dto.getId()))
                 .willReturn(false);
 
-        // when
-        // then
+        // when // then
         assertThatThrownBy(() ->mockExamService.getExamById(dto.getId()))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("Geen toets gevonden");
@@ -130,8 +114,6 @@ class ExamServiceImplTest {
     @Test
     void shouldTestMethodAssignUserProfileToExam() {
         // Arrange / Given
-//        Exam exam = new Exam();
-//        exam.setId(2L);
         UserProfile up = new UserProfile();
         up.setId(2L);
 
@@ -145,7 +127,6 @@ class ExamServiceImplTest {
         Optional<Exam> examFound = mockExamRepository.findById(exam.getId());
         Optional<UserProfile> upFound = userProfileRepository.findById(up.getId());
 
-        // Act / When
         mockExamService.assignUserProfileToExam(examFound.get().getId(), upFound.get().getId());
         Exam found = examFound.get();
         Long expected = up.getId();
@@ -156,10 +137,6 @@ class ExamServiceImplTest {
 
     @Test
     void shouldTestMethodAssignWordListToExam() {
-        // Arrange / Given
-        exam.setId(2L);
-        wl.setTitle("dieren");
-
         Mockito
                 .when(mockExamRepository.findById(exam.getId()))
                 .thenReturn(Optional.of(exam));
@@ -170,12 +147,10 @@ class ExamServiceImplTest {
         Optional<Exam> examFound = mockExamRepository.findById(exam.getId());
         Optional<WordList> wlFound = wlRepository.findById(wl.getTitle());
 
-//      // Act / When
         mockExamService.assignWordListToExam(examFound.get().getId(), wlFound.get().getTitle());
         Exam found = examFound.get();
         String expected = wl.getTitle();
 
-        // Assert / Then
         assertEquals(expected, found.getWordList().getTitle());
     }
 

@@ -30,7 +30,6 @@ class ExamTest {
         mockMvc.perform(get("/exams").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
     }
 
 }

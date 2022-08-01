@@ -5,11 +5,12 @@ INSERT INTO users (username, password, email, enabled) VALUES ('Mirte123', '$2a$
 INSERT INTO authorities (username, authority) VALUES ('TestDocent', 'TEACHER');
 INSERT INTO authorities (username, authority) VALUES ('TestLeerling', 'STUDENT');
 INSERT INTO authorities (username, authority) VALUES ('Mirte123', 'STUDENT');
--- Extra for later: admin is een docent die alles van iedereen kan inzien en aanpassen.
+-- Extra for later: make authority Admin with all excess and Teacher limited.
 
 INSERT INTO user_profiles (id, first_name, last_name, age, school, username) VALUES (1001, 'Piet', 'Pietersen', null, 'Freelancer', 'TestDocent');
 INSERT INTO user_profiles (id, first_name, last_name, age, school, username) VALUES (1002, 'Jantje', 'Jansen', 11, 'Montessori School', 'TestLeerling');
 INSERT INTO user_profiles (id, first_name, last_name, age, school, username) VALUES (1003, 'Mirte', 'Houwing', 28, 'Novi Hogeschool', 'Mirte123');
+
 
 
 INSERT INTO wordlists (title) VALUES ('dieren');

@@ -85,7 +85,6 @@ class WordListControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
-//                .andExpect((ResultMatcher) (jsonPath("$.title", is("kleuren"))));
     }
 
 
@@ -105,7 +104,6 @@ class WordListControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
-//                .andExpect(jsonPath("$[0].title", is(wl.getTitle()));
     }
 
 }

@@ -44,10 +44,10 @@ public class ImageService {
     public String uploadImage(MultipartFile file, String url){
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
-//        Next line to save file in directory for Windows:
+//  Use this line to save file in directory for Windows:
 //        Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
 
-//        Next line to save file in directory for Mac:
+//  Use this line to save file in directory for Mac:
         Path filePath = Paths.get(fileStoragePath + "/" + fileName);
 
         try {
@@ -57,7 +57,6 @@ public class ImageService {
         }
 
         imageRepository.save(new Image(fileName, file.getContentType(), url));
-
         return fileName;
     }
 
@@ -79,7 +78,6 @@ public class ImageService {
         }
     }
 
-
     public Collection<Image> getAllImages() {
         return imageRepository.findAll();
     }
@@ -89,52 +87,3 @@ public class ImageService {
     }
 
 }
-
-
-//    public byte[] getImageById(Long id) {
-//        if (!imageRepository.existsById(id)) {
-//            throw new RecordNotFoundException("Afbeelding niet gevonden.");
-//        } else {
-//            Image img = imageRepository.findById(id).get();
-//            return img.image;
-//        }
-//    }
-
-
-
-//    public String updateImage(String imageName, MultipartFile file){
-//        if (imageRepository.findById(imageName).isPresent()) {
-//            Image img = new Image(img.setImageName(img.getImageName());
-//
-//            return img;
-//        } else {
-//            throw new RecordNotFoundException("Afbeelding niet gevonden.");
-//        }
-//    }
-
-
-//
-//    public Image uploadImage(MultipartFile file){
-//        Image img = new Image();
-//        try {
-//            img.setImage(file.getBytes());
-//            img.setType(file.getContentType());
-//            imageRepository.save(img);
-//        } catch (IOException iex){
-//            throw new RuntimeException("Error tijdens opslaan");
-//        }
-//        return img;
-//    }
-
-
-//        Image img = new Image();
-//        img.setMediaType(file.getContentType()); //dit moet dan in de service opgeslagen worden..
-//        var a = file.getResource();
-//        try {
-//            img.image = file.getBytes();
-//        }
-//        catch (IOException iex){
-//            return "Error while uploading image"; // kan deze error nog specificeren.
-//        }
-//        imageRepository.save(img);  //die methode aanmaken in service
-//        return "Image uploaded";

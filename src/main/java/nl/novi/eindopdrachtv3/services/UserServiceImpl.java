@@ -77,8 +77,6 @@ public class UserServiceImpl implements UserService{
         UserProfileDto upDto = new UserProfileDto();
         UserProfileDto SavedUpDto = userProfileServiceImpl.createUserProfile(upDto);
 
-//        newUser.setUserProfile(userProfileServiceImpl.fromDtoToUserPrId(SavedUpDto));
-
         userRepository.save(newUser);
 
         userProfileServiceImpl.assignUserToUserProfile(SavedUpDto.getId(), userDto.getUsername());
@@ -96,28 +94,22 @@ public class UserServiceImpl implements UserService{
     public void updateUser(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new RecordNotFoundException();
-//        } else if (userRepository.existsById(updatedUser.getUsername())) {
-//            throw new BadRequestException("username " + updatedUser.getUsername() + " taken");
         } else {
         User user = userRepository.findById(username).get();
-//        if (updatedUser.getUsername() != null) {
-//            user.setUsername(updatedUser.getUsername());
-//        }
+
         if (updatedUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
         if (updatedUser.getEmail() != null) {
                 user.setEmail(updatedUser.getEmail());
-        } // usProf kan eigenlijk ook weg, niet gebruikt vanuit FE
+        } // updating profile not used in current FE
         if (updatedUser.getUserProfile() != null) {
                 user.setUserProfile(updatedUser.getUserProfile());
         }
         userRepository.save(user);
         }
     }
-//            else {
-//            user.setUsername(user.getUsername());
-//        }
+
 
     public void setUserEnabled(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
@@ -159,7 +151,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    // methodes voor omzetten van dto naar entitie en andersom.
+    // methods for transition between dto & entities
     public static UserDto fromUserToDto(User user){
 
         var dto = new UserDto();

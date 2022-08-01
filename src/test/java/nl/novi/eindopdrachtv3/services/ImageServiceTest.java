@@ -1,9 +1,7 @@
 package nl.novi.eindopdrachtv3.services;
 
-import nl.novi.eindopdrachtv3.Eindopdrachtv3Application;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.repositories.ImageRepository;
-import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -52,8 +50,7 @@ class ImageServiceTest {
         given(imageRepository.existsById(image.getFileName()))
                 .willReturn(false);
 
-        // when
-        // then
+        // when // then
         assertThatThrownBy(() ->imageService.getImageByName(image.getFileName()))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("file doesn't exist or not readable");

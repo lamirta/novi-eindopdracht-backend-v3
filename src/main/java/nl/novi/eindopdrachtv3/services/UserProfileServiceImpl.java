@@ -26,6 +26,9 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ExamServiceImpl examService;
+
     @Override
     public List<UserProfileDto> getAllUserProfiles() {
         List<UserProfile> upsList = userProfileRepository.findAll();
@@ -59,6 +62,11 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public void deleteUserProfile(Long id) {
+        examService.deleteAllExamsByUserProfile(id);
+
+        UserProfile up = userProfileRepository.getById(id);
+        up.setExams(null);
+
         userProfileRepository.deleteById(id);
     }
 
@@ -120,7 +128,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
 
-    // methodes voor omzetten van dto naar entitie en andersom.
+    // methods for transition between dto & entities
     public static UserProfileDto fromUserPrToDto(UserProfile up){
         var dto = new UserProfileDto();
 

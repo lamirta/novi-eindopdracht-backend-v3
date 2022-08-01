@@ -9,10 +9,7 @@ public interface ExamService {
     ExamDto getExamById(Long id);
     ExamDto startExam(ExamDto examDto);
     void deleteExamById(Long id);
+    void deleteAllExamsByUserProfile(Long id);
     void assignUserProfileToExam(Long id, Long userProfileId);
     void assignWordListToExam(Long id, String wordlistTitle);
-
-
-//    List<ExamDto> getExamsByIsPassed(boolean isPassed); // true/false
-//    List<ExamDto> getExamsOfUsername (User username);
 }

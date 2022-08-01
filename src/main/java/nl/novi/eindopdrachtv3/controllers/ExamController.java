@@ -43,6 +43,11 @@ public class ExamController {
         service.deleteExamById(id);
     }
 
+    @DeleteMapping("/exams/userprofile/{id}")
+    public void deleteAllExamsByUserProfile(@PathVariable("id") Long id) {
+        service.deleteAllExamsByUserProfile(id);
+    }
+
     // not needed in current FE, initialized with saveExam
     @PutMapping("/exams/{id}/profileId")
     public void assignUserProfileToExam(@PathVariable("id") Long id, @RequestBody IdInputDto input) {

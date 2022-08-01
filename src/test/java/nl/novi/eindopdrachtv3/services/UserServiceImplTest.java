@@ -196,8 +196,7 @@ class UserServiceImplTest {
         given(userRepository.existsById(dto.getUsername()))
                 .willReturn(false);
 
-        // when
-        // then
+        // when // then
         assertThatThrownBy(() -> userServiceImpl.getUserByUsername(dto.getUsername()))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessageContaining(dto.getUsername());
