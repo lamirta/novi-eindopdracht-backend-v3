@@ -2,11 +2,8 @@ package nl.novi.eindopdrachtv3.services;
 
 import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
-import nl.novi.eindopdrachtv3.exceptions.TitleNotFoundException;
-import nl.novi.eindopdrachtv3.models.User;
+import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.models.UserProfile;
-import nl.novi.eindopdrachtv3.models.WordList;
-import nl.novi.eindopdrachtv3.repositories.ExamRepository;
 import nl.novi.eindopdrachtv3.repositories.ImageRepository;
 import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
@@ -27,6 +25,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ExamServiceImpl examService;
 
     @Override
     public List<UserProfileDto> getAllUserProfiles() {
@@ -51,12 +52,21 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto createUserProfile(UserProfileDto dto) {
-        userProfileRepository.save(fromDtoToUserPr(dto));
-        return dto;
+        UserProfile up = fromDtoToUserPr(dto);
+        userProfileRepository.save(up);
+
+        UserProfileDto newDto = fromUserPrToDto(up);
+
+        return newDto;
     }
 
     @Override
     public void deleteUserProfile(Long id) {
+        examService.deleteAllExamsByUserProfile(id);
+
+        UserProfile up = userProfileRepository.getById(id);
+        up.setExams(null);
+
         userProfileRepository.deleteById(id);
     }
 
@@ -65,14 +75,18 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (userProfileRepository.findById(id).isPresent()) {
 
             UserProfile up = userProfileRepository.findById(id).get();
-            up.setId(up.getId());
-            up.setFirstName(dto.getFirstName());
-            up.setLastName(dto.getLastName());
-            up.setAge(dto.getAge());
-            up.setSchool(dto.getSchool());
-            up.setUsername(dto.getUsername());
-            up.setProfilePic(dto.getProfilePic());
-            up.setExams(dto.getExams());
+            if (dto.getFirstName() != null) {
+                up.setFirstName(dto.getFirstName());
+            }
+            if (dto.getLastName() != null) {
+                up.setLastName(dto.getLastName());
+            }
+            if (dto.getAge() != null) {
+                up.setAge(dto.getAge());
+            }
+            if (dto.getSchool() != null) {
+                up.setSchool(dto.getSchool());
+            }
             userProfileRepository.save(up);
 
             return dto;
@@ -82,16 +96,16 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public void assignImageToUserProfile(Long id, Long imageId) {
-        var optionalUserProfile = userProfileRepository.findById(id);
-        var optionalImage = imageRepository.findById(imageId);
+    public void assignImageToProfile(Long profileId, String fileName) {
+        Optional<UserProfile> optionalProfile = userProfileRepository.findById(profileId);
+        Optional<Image> optImg = imageRepository.findByFileName(fileName);
 
-        if(optionalUserProfile.isPresent() && optionalImage.isPresent()) {
-            var userProfile = optionalUserProfile.get();
-            var image = optionalImage.get();
+        if (optionalProfile.isPresent() && optImg.isPresent()) {
+            UserProfile profile = optionalProfile.get();
+            Image img = optImg.get();
 
-            userProfile.setProfilePic(image);
-            userProfileRepository.save(userProfile);
+            profile.setProfilePic(img);
+            userProfileRepository.save(profile);
         } else {
             throw new RecordNotFoundException();
         }
@@ -112,21 +126,9 @@ public class UserProfileServiceImpl implements UserProfileService {
             throw new RecordNotFoundException();
         }
     }
-    @Override
-    public UserProfileDto getUserProfileByUsername(String username) {
-//        if (userProfileRepository.findByUsername(username)){
-            UserProfile up = userProfileRepository.findByUsername(username);
-            UserProfileDto dto = fromUserPrToDto(up);
-            return dto;
-//        } else {
-//            throw new RecordNotFoundException("geen user profiel gevonden");
-//        }
-
-//        return userProfileRepository.findByUsername(username);
-    }
 
 
-    // methodes voor omzetten van dto naar entitie en andersom.
+    // methods for transition between dto & entities
     public static UserProfileDto fromUserPrToDto(UserProfile up){
         var dto = new UserProfileDto();
 
@@ -145,7 +147,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfile fromDtoToUserPr(UserProfileDto upDto) {
         var up = new UserProfile();
 
-        up.setId(upDto.getId());
+//        up.setId(upDto.getId());
         up.setFirstName(upDto.getFirstName());
         up.setLastName(upDto.getLastName());
         up.setAge(upDto.getAge());
@@ -156,18 +158,5 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         return up;
     }
+
 }
-
-
-
-//    @Override
-//    public UserProfileDto getUserProfileByUsername(User username) {
-//        if (userProfileRepository.findByUsername(username).isPresent()){
-//            UserProfile up = userProfileRepository.findByUsername(username).get();
-//            UserProfileDto dto = fromUserPrToDto(up);
-//            return dto;
-//        } else {
-//            throw new RecordNotFoundException("geen user profiel gevonden");
-//        }
-//    }
-

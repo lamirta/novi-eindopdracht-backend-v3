@@ -7,13 +7,9 @@ import nl.novi.eindopdrachtv3.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +52,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    // denk dat deze het niet doet bij testen.. of misschien een PUT met IdInputDto?
     @PutMapping("/users/{username}/enabled")
     public ResponseEntity<UserDto> setUserEnabled(@PathVariable("username") String username, @RequestBody UserDto dto) {
         service.setUserEnabled(username, dto);

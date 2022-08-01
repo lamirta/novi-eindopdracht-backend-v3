@@ -1,7 +1,6 @@
 package nl.novi.eindopdrachtv3.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.istack.NotNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,13 +10,20 @@ import java.time.LocalDateTime;
 public class Exam {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "exam_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "5"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     Long id;
 
     private int wrongEntries;
     private Boolean isPassed;
-
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private LocalDateTime timestamp;
 
     @ManyToOne
@@ -32,21 +38,6 @@ public class Exam {
     public Exam() {
     }
 
-    public Exam(Long id, int wrongEntries, Boolean isPassed) {
-        this.id = id;
-        this.wrongEntries = wrongEntries;
-        this.isPassed = isPassed;
-    }
-
-    public Exam(Long id, int wrongEntries, Boolean isPassed, LocalDateTime timestamp, WordList wordList, UserProfile userProfile) {
-        this.id = id;
-        this.wrongEntries = wrongEntries;
-        this.isPassed = isPassed;
-        this.timestamp = timestamp;
-        this.wordList = wordList;
-        this.userProfile = userProfile;
-//        this.timestamp = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;

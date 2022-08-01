@@ -2,12 +2,13 @@ package nl.novi.eindopdrachtv3.services;
 
 import lombok.AllArgsConstructor;
 import nl.novi.eindopdrachtv3.dtos.UserDto;
+import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
 import nl.novi.eindopdrachtv3.exceptions.BadRequestException;
 import nl.novi.eindopdrachtv3.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtv3.exceptions.UsernameNotFoundException;
 import nl.novi.eindopdrachtv3.models.Authority;
-import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.User;
+import nl.novi.eindopdrachtv3.repositories.UserProfileRepository;
 import nl.novi.eindopdrachtv3.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,12 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserProfileServiceImpl userProfileServiceImpl;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,9 +64,6 @@ public class UserServiceImpl implements UserService{
         return udtoList;
     }
 
-//    if (data.getPassword() != null) {
-//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
-//    }
 
     public UserDto createUser(UserDto userDto) {
         boolean existsUsername = userRepository.existsById(userDto.getUsername());
@@ -67,41 +71,45 @@ public class UserServiceImpl implements UserService{
             throw new BadRequestException("username " + userDto.getUsername() + " taken");
         }
         User newUser = fromDtoToUser(userDto);
-        newUser.addAuthority(new Authority(newUser.getUsername(), "ROLE_USER"));
+        newUser.addAuthority(new Authority(newUser.getUsername(), "STUDENT"));
         newUser.setEnabled(true);
+
+        UserProfileDto upDto = new UserProfileDto();
+        UserProfileDto SavedUpDto = userProfileServiceImpl.createUserProfile(upDto);
+
         userRepository.save(newUser);
+
+        userProfileServiceImpl.assignUserToUserProfile(SavedUpDto.getId(), userDto.getUsername());
+
         return userDto;
     }
 
+
+    // not needed in current FE, delete UserProfile also auto-deletes User.
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
+
     public void updateUser(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
             throw new RecordNotFoundException();
-        } else if (userRepository.existsById(updatedUser.getUsername())) {
-            throw new BadRequestException("username " + updatedUser.getUsername() + " taken");
         } else {
         User user = userRepository.findById(username).get();
-        if (updatedUser.getUsername() != null) {
-            user.setUsername(updatedUser.getUsername());
-        }
+
         if (updatedUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
         if (updatedUser.getEmail() != null) {
                 user.setEmail(updatedUser.getEmail());
-        }
+        } // updating profile not used in current FE
         if (updatedUser.getUserProfile() != null) {
                 user.setUserProfile(updatedUser.getUserProfile());
         }
         userRepository.save(user);
         }
     }
-//            else {
-//            user.setUsername(user.getUsername());
-//        }
+
 
     public void setUserEnabled(String username, UserDto updatedUser) {
         if (!userRepository.existsById(username)) {
@@ -143,7 +151,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    // methodes voor omzetten van dto naar entitie en andersom.
+    // methods for transition between dto & entities
     public static UserDto fromUserToDto(User user){
 
         var dto = new UserDto();
@@ -171,22 +179,5 @@ public class UserServiceImpl implements UserService{
             throw new BadRequestException("password cannot be empty");
         }
     }
-
-    //    if (data.getPassword() != null) {
-//        user.setPassword(passwordEncoder.encode(data.getPassword().get()));
-//    }
-
-//    public User fromDtoToUser(UserDto userDto) {
-//
-//        var user = new User();
-//
-//        user.setUsername(userDto.getUsername());
-//        user.setPassword(userDto.getPassword());
-//        user.setEmail(userDto.getEmail());
-//        user.setEnabled(userDto.isEnabled());
-//        user.addAuthority(new Authority(userDto.getUsername(), "ROLE_USER"));
-//
-//        return user;
-//    }
 
 }

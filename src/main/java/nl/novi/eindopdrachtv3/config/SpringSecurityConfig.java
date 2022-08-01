@@ -1,11 +1,10 @@
 package nl.novi.eindopdrachtv3.config;
 
-import nl.novi.eindopdrachtv3.services.ExamService;
+import nl.novi.eindopdrachtv3.services.JwtService;
 import nl.novi.eindopdrachtv3.utils.JwtRequestFilter;
 import nl.novi.eindopdrachtv3.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,10 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
-@Configuration
-@Component
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,7 +23,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public JwtRequestFilter jwtRequestFilter;
+    private JwtService jwtService;
 
 
     @Autowired
@@ -35,11 +31,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
-//    @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
-//        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -47,32 +41,59 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http     // deze allemaal nog even goed zetten, dubbel check!!
-                .csrf().disable()
-                .authorizeRequests()
-//                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-////                .antMatchers(HttpMethod.POST, "/users/{username}/enabled").hasRole("ADMIN")
-////                .antMatchers(HttpMethod.GET,"/userprofiles").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("ADMIN")
-////                .antMatchers(HttpMethod.POST,"/users/**").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.POST,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.PUT,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.DELETE,"/wordlists/**").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.GET,"/exams").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.DELETE,"/exams/**").hasAnyRole("ADMIN", "DOCENT")
-////                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("ADMIN", "DOCENT")
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // avoid cookies
+                .and().authorizeRequests()
+
+                //API auth
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // om cookies te voorkomen
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
+                //API getAll
+                .antMatchers(HttpMethod.GET,"/users").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/userprofiles").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/exams").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/images").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/wordlists").hasAnyAuthority("TEACHER", "STUDENT")
+
+                //API users
+                .antMatchers(HttpMethod.POST,"/users").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.POST, "/users/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.PUT,"/users/{username}").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.PUT,"/users/{username}/enabled").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/users/**").hasAnyAuthority("TEACHER", "STUDENT")
+
+                //API profiles
+                .antMatchers(HttpMethod.POST, "/userprofiles").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.PUT,"/userprofiles/{id}/image").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.PUT,"/userprofiles/{id}/**").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.DELETE, "/userprofiles/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/userprofiles/{id}").hasAnyAuthority("TEACHER", "STUDENT")
+
+                //API exams
+                .antMatchers(HttpMethod.POST,"/exams").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.PUT,"/exams/{id}/**").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.DELETE,"/exams/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/exams/{id}").hasAnyAuthority("TEACHER", "STUDENT")
+
+                //API wordlists
+                .antMatchers(HttpMethod.POST,"/wordlists").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.DELETE,"/wordlists/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.PUT,"/wordlists/**").hasAuthority("TEACHER")
+                .antMatchers(HttpMethod.GET,"/wordlists/**").hasAnyAuthority("TEACHER", "STUDENT")
+
+                //API images
+                .antMatchers(HttpMethod.POST,"/images").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.DELETE,"/images/**").hasAnyAuthority("TEACHER", "STUDENT")
+                .antMatchers(HttpMethod.GET,"/images/**").hasAnyAuthority("TEACHER", "STUDENT")
+
+                .and()
+                .addFilterBefore(new JwtRequestFilter(jwtService, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable()
+                .cors();
     }
 
 }

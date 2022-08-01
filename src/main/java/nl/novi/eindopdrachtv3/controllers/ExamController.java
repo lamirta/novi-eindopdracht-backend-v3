@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.ExamDto;
+import nl.novi.eindopdrachtv3.dtos.IdInputDto;
 import nl.novi.eindopdrachtv3.services.ExamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,37 +43,21 @@ public class ExamController {
         service.deleteExamById(id);
     }
 
-    @PutMapping("/exams/{id}/{userProfileId}")
-    public void assignUserProfileToExam(@PathVariable("id") Long id, @PathVariable("userProfileId") Long userProfileId) {
-        service.assignUserProfileToExam(id, userProfileId);
+    @DeleteMapping("/exams/userprofile/{id}")
+    public void deleteAllExamsByUserProfile(@PathVariable("id") Long id) {
+        service.deleteAllExamsByUserProfile(id);
     }
 
-    @PutMapping("/exams/{id}/{wordlistTitle}")
-    public void assignWordListToExam(@PathVariable("id") Long id, @PathVariable("wordlistTitle") String wordlistTitle) {
-        service.assignWordListToExam(id, wordlistTitle);
+    // not needed in current FE, initialized with saveExam
+    @PutMapping("/exams/{id}/profileId")
+    public void assignUserProfileToExam(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
+        service.assignUserProfileToExam(id, input.id);
+    }
+
+    // not needed in current FE, initialized with saveExam
+    @PutMapping("/exams/{id}/title")
+    public void assignWordListToExam(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
+        service.assignWordListToExam(id, input.title);
     }
 
 }
-
-
-
-
-
-//    @GetMapping("/exams/{title}")
-//    public ResponseEntity<Object> getAllExamsByWordListTitle(@RequestParam String title) {
-//        return null;
-//    }
-
-//    @GetMapping("/exams/{isPassed}/{true}")
-//    public ResponseEntity<Object> getPassedExams(@PathVariable boolean isPassed) {
-//        List<ExamDto> allPassedExams = service.getPassedExams(true);
-//        return new ResponseEntity<>(allPassedExams, HttpStatus.OK);
-//    }
-
-//    // method hiervoor schrijven in service
-//    @GetMapping("/exams/{isPassed}")
-//    public ResponseEntity<ExamDto> getExamsByIsPassed(@PathVariable boolean isPassed) {
-//        List<ExamDto> allExamResults = service.getExamsByIsPassed(isPassed);
-//        return new ResponseEntity<>(allExamResults, HttpStatus.OK);
-//    }
-//

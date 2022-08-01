@@ -4,7 +4,6 @@ import nl.novi.eindopdrachtv3.models.Exam;
 import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.models.User;
 
-import javax.persistence.Column;
 import java.util.List;
 
 public class UserProfileDto {
@@ -16,7 +15,6 @@ public class UserProfileDto {
     private Integer age;
     private String school;
 
-    @Column(nullable = false, unique = true)
     private User username;
     private Image profilePic;
     private List<Exam> exams;
@@ -27,6 +25,7 @@ public class UserProfileDto {
     public UserProfileDto(Long id) {
         this.id = id;
     }
+    
 
     public Long getId() {
         return id;

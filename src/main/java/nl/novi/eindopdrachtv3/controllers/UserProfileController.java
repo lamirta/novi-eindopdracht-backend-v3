@@ -2,9 +2,12 @@ package nl.novi.eindopdrachtv3.controllers;
 
 import nl.novi.eindopdrachtv3.dtos.IdInputDto;
 import nl.novi.eindopdrachtv3.dtos.UserProfileDto;
+import nl.novi.eindopdrachtv3.models.Image;
 import nl.novi.eindopdrachtv3.services.UserProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -12,10 +15,14 @@ import java.util.List;
 @CrossOrigin
 @RestController
 public class UserProfileController {
-    private final UserProfileService service;
 
-    public UserProfileController(UserProfileService service) {
+    private final UserProfileService service;
+    private final ImageController imageController;
+
+    @Autowired
+    public UserProfileController(UserProfileService service, ImageController imageController) {
         this.service = service;
+        this.imageController = imageController;
     }
 
     @GetMapping("/userprofiles")
@@ -48,22 +55,17 @@ public class UserProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/userprofiles/{id}/profilepic")
-    public void assignImageToUserProfile(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
-        service.assignImageToUserProfile(id, input.id);
-    }
-
+    // Not needed in current FE, iniciated while creating User class
     @PutMapping("/userprofiles/{id}/username")
     public void assignUserToUserProfile(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
         service.assignUserToUserProfile(id, input.username);
     }
 
-    //TRY OUT:
-    // hoe haal ik nu iets op uit repo op basis van username??
-    @GetMapping("/userprofiles/user/{username}")
-    public ResponseEntity<UserProfileDto> getUserProfileByUsername(@PathVariable("username") String username) {
-        UserProfileDto up = service.getUserProfileByUsername(username);
-        return ResponseEntity.ok().body(up);
-    }
+    @PostMapping("/userprofiles/{id}/image")
+    public void assignImageToProfile(@PathVariable("id") Long profileId,
+                                     @RequestBody MultipartFile file) {
 
+        Image image = imageController.uploadImage(file);
+        service.assignImageToProfile(profileId, image.getFileName());
+    }
 }

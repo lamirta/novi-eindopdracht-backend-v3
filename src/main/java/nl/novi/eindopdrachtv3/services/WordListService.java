@@ -10,5 +10,4 @@ public interface WordListService {
     WordListDto createWordList(WordListDto wordListDto);
     void deleteWordList(String title);
     WordListDto updateWordList(String title, WordListDto wordListDto);
-//    void deleteWordsInWordList(List<String> words);  // dat doe je al met update / Put volgens mij..
 }

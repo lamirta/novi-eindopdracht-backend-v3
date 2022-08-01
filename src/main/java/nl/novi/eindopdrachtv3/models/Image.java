@@ -1,53 +1,55 @@
 package nl.novi.eindopdrachtv3.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "images")
 public class Image {
 
     @Id
-    @Column(nullable = false, unique = true)
-    @GeneratedValue
-    private Long id;
+    @Column(unique = true)
+    private String fileName;
 
-    @Lob
-    public byte[] image;
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "image_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
 
     private String type;
 
-    @OneToOne(mappedBy = "profilePic")
-    @JsonIgnore
-    private UserProfile userProfile;
+    private String url;
 
     public Image() {
     }
 
-    public Image(Long id) {
-        this.id = id;
+    public Image(String fileName) {
+        this.fileName = fileName;
     }
 
-    public Image(Long id, byte[] image, String type, UserProfile userProfile) {
-        this.id = id;
-        this.image = image;
+    public Image(String fileName, String type, String url) {
+        this.fileName = fileName;
         this.type = type;
-        this.userProfile = userProfile;
+        this.url = url;
     }
 
-    public Long getId() {
-        return id;
+    public String getFileName() {
+        return fileName;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getUrl() {
+        return url;
     }
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getType() {
@@ -57,17 +59,4 @@ public class Image {
         this.type = type;
     }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
-    }
-    public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
-    }
 }
-
-
-
-//Of andersom?
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_profile_id", referencedColumnName = "id")
-//    private UserProfile userProfile;
