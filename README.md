@@ -7,20 +7,12 @@ This repository contains the backend code for the application 'Flash Word', whic
 The backend is created in Spring Boot, using Java. 
 
 ## Instructions
-In the project directory, you can run:
+Run the backend code on http://localhost:8080. Make sure to have PostgreSQL open serving as a database. Feel free to use another program for the database, but make sure to adjust the settings in the file `application.properties`
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes and safe them.\
-You may also see any lint errors in the console.
-
-_Note_: because this project runs on localhost:3000 it is important to start this project before starting/running another project. React will then automatically ask to run that project on a different port.
+Run the frontend code on localhost:3000.
 
 ## REST-endpoint documentation
-These are the endpoints that are available in the backend code. The backend code is running on http://localhost:8080 , so make sure to check if this. Copy+Paste the reuqest path to access the endpoint. 
+These are the endpoints that are available in the backend code. The backend code is running on http://localhost:8080 , so make sure to check this. Copy+Paste the reuqest path to access the endpoint. 
 
 ### Authentication
 #### POST `/authenticate`
